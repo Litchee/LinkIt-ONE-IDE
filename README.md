@@ -1,6 +1,6 @@
 Arduino IDE for LinkIt ONE
 -----------
-The LinkIt ONE development board is an open source, high performance board for prototyping Wearables and IoT devices. It's based on the world’s leading SoC for Wearables, MediaTek Aster (**MT2502**) combined with high performance Wi-Fi (MT5931) and GPS (MT3332) chipsets to provide you with access to all the features of MediaTek LinkIt. It also provides similar pin-out features to Arduino boards, making it easy for you to connect to various sensors, peripherals, and Arduino shields.
+The LinkIt ONE development board is an open source, high performance board for prototyping Wearables and IoT devices. It's based on the world’s leading SoC for Wearables, MediaTek Aster (**MT2502**) combined with high performance Wi-Fi (**MT5931**) and GPS (**MT3332**) chipsets to provide you with access to all the features of MediaTek LinkIt. It also provides similar pin-out features to Arduino boards, making it easy for you to connect to various sensors, peripherals, and Arduino shields.
 
 LinkIt ONE is a co-design product by Seeed Studio and MediaTek. It brings together the parties’ knowledge in open hardware and industry leading reference designs for Wearables and IoT devices to create this powerful development board.
 ![](http://www.seeedi.com/depot/includes/templates/bootstrap/images/Linkit-one-page.jpg)
