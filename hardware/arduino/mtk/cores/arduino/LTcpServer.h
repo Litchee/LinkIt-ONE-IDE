@@ -1,3 +1,16 @@
+/*
+  Copyright (c) 2014 MediaTek Inc.  All right reserved.
+
+  This library is free software; you can redistribute it and/or
+  modify it under the terms of the GNU Lesser General Public
+  License as published by the Free Software Foundation; either
+  version 2.1 of the License..
+
+  This library is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. 
+   See the GNU Lesser General Public License for more details.
+*/
 #ifndef LTcpServer_h
 #define LTcpServer_h
 #include "Arduino.h"	
@@ -9,6 +22,18 @@
 class LTcpClient;
 
 //LTcpServer Class
+//
+// LTcpServer is the base implementation of LWiFiServer and LGPRSServer. 
+// You should not use LTcpServer instances directly. Instead, declare instances of LWiFiServer
+// or LGPRSServer and use them to host TCP port through Wi-Fi and GPRS.
+// 
+// EXAMPLE:
+// <code>
+//     LWiFi.begin();
+//     LWiFi.connect("open_network");
+//     LWiFiServer server(80);
+//     server.begin();  // start listening on port 80 via Wi-Fi network
+// </code>
 class LTcpServer : public Server {
 public:
 
@@ -30,20 +55,6 @@ public:
   // RETURNS
   //   N/A
   LTcpServer(uint16_t port);
-
-  /* DOM-NOT_FOR_SDK-BEGIN */
-  // DESCRIPTION
-  //   Checks if there is a client connected.
-  //   If there is one, an LTcpClient object will be returned to represent the connection between this server object and the remote client. Call LTcpClient.read()/LTcpClient.write() to exchange data with the connected client.
-  // 
-  // PARAMETERS
-  //   N/A
-  // 
-  // RETURNS
-  //   An pointer to LTcpClient object representing the connection between this server object and the remote client.
-  //   This object will turn to false if there is no incoming connection.
-  void availableImpl(VMINT& hClient, VMINT& hServer);
-  /* DOM-NOT_FOR_SDK-END */	
 
   // DESCRIPTION
   //   Starts listening to a TCP port that accepts client connections.
@@ -100,7 +111,22 @@ public:
   IPAddress serverIP();
 
   using Print::write;
-  /* DOM-NOT_FOR_SDK-END */	
+
+protected:
+  /* DOM-NOT_FOR_SDK-BEGIN */
+  // DESCRIPTION
+  //   This is the internal implementation of available(). 
+  //   Since we cannot return different class objects in different child class implementations, we return hClient/hServer handle
+  //   instead and use these handles to create LWiFiClient / LGPRSClient objects in child class implementations.
+  // 
+  // PARAMETERS
+  //   N/A
+  // 
+  // RETURNS
+  //   An pointer to LTcpClient object representing the connection between this server object and the remote client.
+  //   This object will turn to false if there is no incoming connection.
+  void availableImpl(VMINT& hClient, VMINT& hServer);
+  /* DOM-NOT_FOR_SDK-END */
 
 protected:
   /* DOM-NOT_FOR_SDK-BEGIN */

@@ -1,3 +1,16 @@
+/*
+  Copyright (c) 2014 MediaTek Inc.  All right reserved.
+
+  This library is free software; you can redistribute it and/or
+  modify it under the terms of the GNU Lesser General Public
+  License as published by the Free Software Foundation; either
+  version 2.1 of the License..
+
+  This library is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. 
+   See the GNU Lesser General Public License for more details.
+*/
 #ifndef LTcpClient_h
 #define LTcpClient_h
 #include "Arduino.h"
@@ -39,7 +52,21 @@ private:
 };
 /* DOM-NOT_FOR_SDK-END */
 
+
 //LTcpClient Class
+//
+// LTcpClient is the base implementation of LWiFiClient and LGPRSClient. 
+// You should not use LTcpClient instances directly. Instead, declare instances of LWiFiClient
+// or LGPRSClient and use them to connect TCP socket through Wi-Fi and GPRS.
+// 
+// EXAMPLE:
+// <code>
+//     LWiFi.begin();
+//     LWiFi.connect("open_network");
+//     LWiFiClient c;
+//     c.connect("www.website.com", 80);
+//     LWiFi.end();
+// </code>
 class LTcpClient : public Client {
 
 public:
@@ -48,9 +75,6 @@ public:
   //  
   // 
   // PARAMETERS
-  //    N/A
-  // 
-  // RETURNS
   //    N/A
   LTcpClient();
 
@@ -70,6 +94,12 @@ public:
   // 
   // RETURNS
   //   1 if connected, 0 otherwise.
+  //
+  // EXAMPLE
+  // <code>
+  //     IPAddress server("127.0.0.1");
+  //     client.connect(server, 80);  // client is an instance of LWiFiClient or LGPRSClient.
+  // </code>
   virtual int connect(IPAddress ip, uint16_t port);
 
   // DESCRIPTION
@@ -81,6 +111,11 @@ public:
   // 
   // RETURNS
   //   1 if connected, 0 otherwise.
+  //
+  // EXAMPLE
+  // <code>
+  //     client.connect("www.somewebsite.com", 80);  // client is an instance of LWiFiClient or LGPRSClient.
+  // </code>
   virtual int connect(const char *host, uint16_t port);
 
   // DESCRIPTION
@@ -103,6 +138,12 @@ public:
   // 
   // RETURNS
   //   Total written bytes.
+  //
+  // EXAMPLE
+  // <code>
+  //     char *message = "GET /search?q=arduino HTTP/1.0";
+  //     client.write((uint8_t*)message, strlen(message));  // client is an instance of LWiFiClient or LGPRSClient.
+  // </code>
   virtual size_t write(const uint8_t *buf, size_t size);
 
   // DESCRIPTION
@@ -114,6 +155,17 @@ public:
   // RETURNS
   //   0: There is no data available for read
   //   >0: Size of the data available to read, in bytes
+  //
+  // EXAMPLE
+  // <code>
+  //     void loop() {
+  //         // if there are incoming bytes available
+  //         // from the server, read them and print them:
+  //         if (client.available()) {
+  //               char c = client.read();
+  //               Serial.print(c);
+  //     }
+  // </code>
   virtual int available();
 
   // DESCRIPTION
@@ -123,7 +175,16 @@ public:
   //   N/A
   // 
   // RETURNS
-  //   The data byte
+  //   The data byte value. -1 is returned if there is no data available.
+  //
+  // EXAMPLE
+  // <code>
+  //     int v = client.read();
+  //     if (v != -1)
+  //     {
+  //       Serial.print((char)v);
+  //     }
+  // </code>
   virtual int read();
 
   // DESCRIPTION
@@ -181,9 +242,16 @@ public:
   //   0: Not connected to a server
   virtual uint8_t connected();
 
-  /* DOM-NOT_FOR_SDK-BEGIN */
+  // DESCRIPTION
+  //   An LWiFiClient or LGPRSClient object will evaluate to true if it is connected.
+  // 
+  // PARAMETERS
+  //   N/A
+  // 
+  // RETURNS
+  //   true: the client object is in connected state.
+  //   flase: the client object is not in connected state.
   virtual operator bool();
-  /* DOM-NOT_FOR_SDK-END */
 
 public:
   friend class LTcpServer;

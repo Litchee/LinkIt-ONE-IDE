@@ -50,6 +50,9 @@ extern "C" {
 /* LINKIT application messge id base, application should define its own message id started from this. */
 #define VM_MESSAGE_ID_BASE  1000
 
+/* LINKIT application messge id maximum, application should define its own message id less than this. */
+#define VM_MESSAGE_ID_MAX  60000
+
 #define VM_MESSAGE_INVALID_ID   0
 
 

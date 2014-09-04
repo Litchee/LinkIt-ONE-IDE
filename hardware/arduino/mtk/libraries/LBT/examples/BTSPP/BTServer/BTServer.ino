@@ -1,3 +1,16 @@
+/*
+  Copyright (c) 2014 MediaTek Inc.  All right reserved.
+
+  This library is free software; you can redistribute it and/or
+  modify it under the terms of the GNU Lesser General Public
+  License as published by the Free Software Foundation; either
+  version 2.1 of the License..
+
+  This library is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. 
+   See the GNU Lesser General Public License for more details.
+*/
 #include <LBT.h>
 #include <LBTServer.h>
 #define SPP_SVR "ARD_SPP" // it is the server's visible name, customize it yourself.
@@ -7,12 +20,12 @@ int read_size = 0;
 void setup() {
   // put your setup code here, to run once:
   Serial.begin(9600);
-  ard_log("start BTS");
+  ard_log("start BTS\n");
 
   bool success = LBTServer.begin((uint8_t*)SPP_SVR);
   if( !success )
   {
-      ard_log("Cannot begin Bluetooth Server successfully");
+      ard_log("Cannot begin Bluetooth Server successfully\n");
       // don't do anything else
       delay(0xffffffff);
   }
@@ -26,9 +39,9 @@ void setup() {
       }
       else
       {
-          ard_log("LBTServer.getHostDeviceInfo failed");
+          ard_log("LBTServer.getHostDeviceInfo failed\n");
       }
-      ard_log("Bluetooth Server begin successfully");
+      ard_log("Bluetooth Server begin successfully\n");
   }
  
   // waiting for Spp Client to connect
@@ -36,13 +49,13 @@ void setup() {
  
   if( !connected )
   {
-      ard_log("No connection request yet");
+      ard_log("No connection request yet\n");
       // don't do anything else
       delay(0xffffffff);
   }
   else
   {
-      ard_log("Connected");
+      ard_log("Connected\n");
   }
 }
 
@@ -87,6 +100,6 @@ void loop() {
     
       sent = 1;
   }
-  ard_log("loop server");
+  ard_log("loop server\n");
   delay(2000);
 }

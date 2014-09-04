@@ -1,3 +1,13 @@
+/*
+ GPRS Web Server
+
+ A simple web server that shows a updating counter
+
+ created 8 Mar 2012
+ by Tom Igoe
+Modified 20 Aug 2014
+ by MediaTek Inc.
+ */
 #include <LGPRS.h>
 #include <LGPRSClient.h>
 #include <LGPRSServer.h>

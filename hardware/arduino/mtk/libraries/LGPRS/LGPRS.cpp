@@ -1,3 +1,16 @@
+/*
+  Copyright (c) 2014 MediaTek Inc.  All right reserved.
+
+  This library is free software; you can redistribute it and/or
+  modify it under the terms of the GNU Lesser General Public
+  License as published by the Free Software Foundation; either
+  version 2.1 of the License..
+
+  This library is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. 
+   See the GNU Lesser General Public License for more details.
+*/
 #include <Arduino.h>
 #include "LTask.h"
 #include "LGPRS.h"
@@ -22,13 +35,9 @@ static void gprsSettingCallback(VMINT32 result, void *user_data)
 {
 	vm_log_info("gprsSettingCallback result=%d", result);
 	
-	// Is there GSM?
+	// check SIM support
 	VMINT protocol = vm_srv_nw_info_get_protocol(VM_SIM_SIM1);
 	vm_log_info("SIM protocol=%d", protocol);
-
-	// Is there GPRS?
-	// VMINT networkReady = vm_srv_nw_info_channel_supports(VM_SIM_SIM1, VM_GPRS);
-	//vm_log_info("SIM GPRS ready? %d", networkReady);
 
 	// get APN info
 	vm_apn_info_ext apnInfo;
@@ -36,27 +45,6 @@ static void gprsSettingCallback(VMINT32 result, void *user_data)
 	vm_log_info("vm_get_apn_info = %d", apnRet);
 	vm_log_info("operator ID= %s", apnInfo.operator_id);
 	vm_log_info("operator Name= %s", apnInfo.operator_name);	
-
-	// retrieve cell info
-	VMINT openResult = vm_cell_open();
-	vm_log_info("open cell = %d", openResult);
-	vm_cell_info_struct *pCell = vm_cell_get_cur_cell_info();
-	if (pCell)
-	{
-		vm_log_info("cell rxlev=%d", pCell->rxlev);
-		vm_log_info("cell arfcn=%d", pCell->arfcn);
-		vm_log_info("cell bsic=%d", pCell->bsic);
-		vm_log_info("cell mcc=%d", pCell->mcc);
-		vm_log_info("cell mnc=%d", pCell->mnc);
-		vm_log_info("cell lac=%d", pCell->lac);
-		vm_log_info("cell ci=%d", pCell->ci);
-	}
-	else
-	{
-		vm_log_info("no cell info");
-	}
-	
-	vm_cell_close();
 
 	// release blocking signal
 	LTask.post_signal();
@@ -107,38 +95,12 @@ boolean LGPRSClass::gprsCheckSIM(void *userData)
 	VMINT protocol = vm_srv_nw_info_get_protocol(VM_SIM_SIM1);
 	vm_log_info("SIM protocol=%d", protocol);
 
-	// Is there GPRS?
-	// VMINT networkReady = vm_srv_nw_info_channel_supports(VM_SIM_SIM1, VM_GPRS);
-	//vm_log_info("SIM GPRS ready? %d", networkReady);
-
 	// get APN info
 	vm_apn_info_ext apnInfo;
 	VMINT apnRet = vm_get_apn_info(&apnInfo);
 	vm_log_info("vm_get_apn_info = %d", apnRet);
 	vm_log_info("operator ID= %s", apnInfo.operator_id);
-	vm_log_info("operator Name= %s", apnInfo.operator_name);	
-
-	// retrieve cell info
-	VMINT openResult = vm_cell_open();
-	vm_log_info("open cell = %d", openResult);
-	vm_cell_info_struct *pCell = vm_cell_get_cur_cell_info();
-	if (pCell)
-	{
-		vm_log_info("cell rxlev=%d", pCell->rxlev);
-		vm_log_info("cell arfcn=%d", pCell->arfcn);
-		vm_log_info("cell bsic=%d", pCell->bsic);
-		vm_log_info("cell mcc=%d", pCell->mcc);
-		vm_log_info("cell mnc=%d", pCell->mnc);
-		vm_log_info("cell lac=%d", pCell->lac);
-		vm_log_info("cell ci=%d", pCell->ci);
-	}
-	else
-	{
-		vm_log_info("no cell info");
-	}
-	
-	vm_cell_close();
-
+	vm_log_info("operator Name= %s", apnInfo.operator_name);
 	
 	return true;
 }
@@ -155,9 +117,8 @@ boolean gprsSetCustomAPN(void *userData)
 	LGPRSAttachContext *pCntx = (LGPRSAttachContext*)userData;
 	VMUINT32 dtacct = 0;
 	VMINT ret = 0;
-	#if 0
+	
 	ret = vm_set_cust_apn_info(&pCntx->info, &dtacct);
-	#endif
 	
 	if(0 != ret)
 	{
@@ -166,8 +127,8 @@ boolean gprsSetCustomAPN(void *userData)
 		return true;
 	}
 
-	// we have only 1 SIM card
-	ret = vm_dtacct_set(VM_SIM_SIM1, dtacct);
+	// we have only 1 SIM card, note that it is index so we use 0, not define SIM
+	ret = vm_dtacct_set(0, dtacct);
 	if(0 != ret)
 	{
 		vm_log_error("vm_dtacct_set fails with %d", ret);
@@ -195,7 +156,6 @@ int LGPRSClass::attachGPRS(const char *apn, const char *username, const char *pa
 	strncpy((char*)cntx.info.Passwd, password,VM_SRV_DTCNT_PROF_MAX);
 
 	// currently we don't configure proxy and DNS
-
 	LTask.remoteCall(&gprsSetCustomAPN, &cntx);
 
 	if(cntx.result == 0)
@@ -327,8 +287,7 @@ int LGPRSClass::hostByName(const char* aHostname, IPAddress& aResult)
 	// parse result
 	if (VM_E_SOC_SUCCESS == context.resolveState)
 	{
-		// TODO: why are there multiple ip addresses?
-		
+		// There may have multiple ip addresses. We take the 1st one.
 		aResult = context.dns.address[0];
 		
 		vm_log_info("get IP=%d.%d.%d.%d", 
@@ -344,10 +303,6 @@ int LGPRSClass::hostByName(const char* aHostname, IPAddress& aResult)
 	}
 }
 
-
-IPAddress LGPRSClass::localIP()
-{
-}
-
+// The sigleton instance that is used to access GPRS functionality.
 LGPRSClass LGPRS;
 

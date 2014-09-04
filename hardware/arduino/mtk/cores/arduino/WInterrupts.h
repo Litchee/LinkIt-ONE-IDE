@@ -1,20 +1,17 @@
 /*
-  Copyright (c) 2011-2012 Arduino.  All right reserved.
+  Copyright (c) 2014 MediaTek Inc.  All right reserved.
 
   This library is free software; you can redistribute it and/or
   modify it under the terms of the GNU Lesser General Public
   License as published by the Free Software Foundation; either
-  version 2.1 of the License, or (at your option) any later version.
+  version 2.1 of the License..
 
   This library is distributed in the hope that it will be useful,
   but WITHOUT ANY WARRANTY; without even the implied warranty of
   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. 
-  See the GNU Lesser General Public License for more details.
-
-  You should have received a copy of the GNU Lesser General Public
-  License along with this library; if not, write to the Free Software
-  Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+   See the GNU Lesser General Public License for more details.
 */
+
 
 #ifndef _WIRING_INTERRUPTS_
 #define _WIRING_INTERRUPTS_
@@ -39,11 +36,7 @@ typedef void (*callback_ptr)(void);
  * PARAMETERS
  *  pin       :         [IN]      Interrupt id, should be 0, and 1; 0 corresponds to pin2 (D2), 1 corresponds to pin3 (D3).
  *  callback  :        [IN]      Interrupt callback
- *  mode       :     [IN]      Interrupt trigger mode, it should be LOW/HIGH/RISING/FALLING/CHANGE
- * RETURNS
- *  None
- * RETURN VALUES  
- *  None
+ *  mode       :     [IN]      Interrupt trigger mode, it should be RISING/FALLING/CHANGE
  * Example
  * <code>
  *
@@ -52,7 +45,7 @@ typedef void (*callback_ptr)(void);
  *  
  * void setup()
  * {
- *  pinMode(pin, OUTPUT);
+ *   pinMode(pin, OUTPUT);
  *   attachInterrupt(0, blink, RISING);
  * }
  *  
@@ -77,10 +70,6 @@ void attachInterrupt(uint32_t pin, callback_ptr callback, uint32_t mode);
  *  Disables ISR.
  * PARAMETERS
  *  pin       :         [IN]      Interrupt id, should be 0, and 1
- * RETURNS
- *  None
- * RETURN VALUES  
- *  None
  *****************************************************************************/
 void detachInterrupt(uint32_t pin);
 
@@ -93,12 +82,6 @@ void detachInterrupt(uint32_t pin);
  *  By default, interrupts make some essential tasks executed in background. Disabling interrupts 
  *  will make some communication functions unable to work normally and external interaction ignored. 
  *  Therefore, please pay particular attention when using this function and enable the interrupt again as soon as possible
- * PARAMETERS
- *  None
- * RETURNS
- *  None
- * RETURN VALUES  
- *  None
  * Example
  * <code>
  *
@@ -123,12 +106,6 @@ void interrupts(void);
  *    noInterrupts
  * DESCRIPTION
  *  Disables interrupt (which can be enabled again by interrupts()).
- * PARAMETERS
- *  None
- * RETURNS
- *  None
- * RETURN VALUES  
- *  None
  *****************************************************************************/
 void noInterrupts(void );
 

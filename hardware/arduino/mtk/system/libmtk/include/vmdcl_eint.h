@@ -66,6 +66,8 @@ typedef enum
 	VM_EINT_CMD_SET_SENSITIVITY,                /* EINT set sensitivity command. */
 	VM_EINT_CMD_MASK,                           /* EINT mask command. */
 	VM_EINT_CMD_UNMASK,                         /* EINT unmask command. */	
+	VM_EINT_CMD_RESERVED,                       /* Reserved, do not use it */
+	VM_EINT_CMD_SET_AUTO_CHANGE_POLARTIY        /* Eint set auto change polarity command*/
 }VM_DCL_EINT_CMD_T;
 
  
@@ -119,6 +121,10 @@ typedef struct
  	VMUINT8 sensitivity;                  /* The value is 1 or 0. 1 means level  sensitive,0 means edge sensitive. */
 }vm_eint_ctrl_set_sensitivity_t;
  
+typedef struct
+{
+	 VMUINT8 autoChangePol; 		/* The value is 1 or 0. 1 means enable auto change polarity, 0 means disable. note that the default value is 0 */
+}vm_eint_ctrl_set_auto_change_pol_t;
 
 
 #endif

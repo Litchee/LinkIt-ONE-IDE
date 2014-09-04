@@ -1,22 +1,3 @@
-/*
-  Servo.h - Interrupt driven Servo library for Arduino using 16 bit timers- Version 2
-  Copyright (c) 2009 Michael Margolis.  All right reserved.
-
-  This library is free software; you can redistribute it and/or
-  modify it under the terms of the GNU Lesser General Public
-  License as published by the Free Software Foundation; either
-  version 2.1 of the License, or (at your option) any later version.
-
-  This library is distributed in the hope that it will be useful,
-  but WITHOUT ANY WARRANTY; without even the implied warranty of
-  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-  Lesser General Public License for more details.
-
-  You should have received a copy of the GNU Lesser General Public
-  License along with this library; if not, write to the Free Software
-  Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
-*/
-
 /* 
   A servo is activated by creating an instance of the Servo class passing 
   the desired pin to the attach() method.
@@ -43,7 +24,11 @@
     readMicroseconds()   - Gets the last written servo pulse width in microseconds. (was read_us() in first release)
     attached()  - Returns true if there is a servo attached. 
     detach()    - Stops an attached servos from pulsing its i/o pin. 
+
+  Modified 20 Aug 2014 by MediaTek Inc.
  */
+
+
 
 #ifndef Servo_h
 #define Servo_h
@@ -74,18 +59,18 @@ typedef struct {
   volatile unsigned int ticks;
 } servo_t;
 
-// DESCRIPTION
-//Servo Library allows RC servo control on LinkIt circuit board. 
-//Servo integrates gears and axes, which is capable of accurate control.
+//DESCRIPTION
+// Servo Library allows RC servo control on LinkIt circuit board. 
+// Servo integrates gears and axes, which is capable of accurate control.
 //
-//A standard servo system positions an axis in different angles, normally between 0 and 180 degree.
-//Rotating servo continuously will set the rotation of axis to different speeds.
+// A standard servo system positions an axis in different angles, normally between 0 and 180 degree.
+// Rotating servo continuously will set the rotation of axis to different speeds.
 //
 //Note:
-//Only pin (D3, D9) with PWM functionality can be used by servo.
+// Only pin (D3, D9) with PWM functionality can be used by servo.
 //
-// EXAMPLE
-// <code>
+//EXAMPLE
+//<code>
 //#include <Servo.h>
 //Servo myservo;
 // 
@@ -104,7 +89,7 @@ typedef struct {
 //  myservo.write(val);               // control servo
 //  delay(200);
 //}
-// <code>
+//<code>
 class Servo
 {
 public:

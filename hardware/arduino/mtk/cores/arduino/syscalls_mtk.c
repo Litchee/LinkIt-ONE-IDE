@@ -14,6 +14,9 @@
   You should have received a copy of the GNU Lesser General Public
   License along with this library; if not, write to the Free Software
   Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+
+  Modified 20 Aug 2014 by MediaTek Inc.
+  
 */
 
 /**
@@ -32,7 +35,6 @@
 
 #include <stdio.h>
 #include <stdarg.h>
-//#include "sam.h"
 #if defined (  __GNUC__  ) /* GCC CS3 */
   #include <sys/types.h>
   #include <sys/stat.h>
@@ -41,10 +43,6 @@
 #include "vmsys.h"
 #include "vmlog.h"
 #include "vmdatetime.h"
-
-/*----------------------------------------------------------------------------
- *        Exported variables
- *----------------------------------------------------------------------------*/
 
 #undef errno
 extern int errno ;
@@ -55,9 +53,6 @@ unsigned char * base_address = NULL;
 
 #define RESERVED_MEMORY_SIZE  270*1024
 
-/*----------------------------------------------------------------------------
- *        Exported functions
- *----------------------------------------------------------------------------*/
 extern void _exit( int status ) ;
 extern void _kill( int pid, int sig ) ;
 extern int _getpid ( void ) ;
@@ -195,7 +190,6 @@ void gcc_entry(unsigned int entry, unsigned int init_array_start, unsigned int c
   if(size == 0)
   {
   	base_address = vm_malloc(g_size);
-	vm_log_info("defalut heap size = %d", g_size);
   }
   else
   {
@@ -203,7 +197,6 @@ void gcc_entry(unsigned int entry, unsigned int init_array_start, unsigned int c
 		size -= RESERVED_MEMORY_SIZE;
 	
   	base_address = vm_malloc(size);
-	vm_log_info("heap size = %d", size);
     	g_size = size;
 }
 

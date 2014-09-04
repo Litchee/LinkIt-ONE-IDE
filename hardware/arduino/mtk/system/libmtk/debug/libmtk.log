@@ -1,5 +1,0 @@
-./libmtk/vmlog.c: In function 'log_it':
-./libmtk/vmlog.c:76: warning: incompatible implicit declaration of built-in function 'memset'
-./libmtk/vmlog.c:80: warning: incompatible implicit declaration of built-in function 'strlen'
-./libmtk/vmlog.c:94: warning: incompatible implicit declaration of built-in function 'strncpy'
-./libmtk/vmlog.c:100: warning: incompatible implicit declaration of built-in function 'strcat'

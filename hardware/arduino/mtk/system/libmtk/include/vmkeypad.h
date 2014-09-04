@@ -62,6 +62,7 @@ extern "C" {
 #define VM_KEY_BACK              (-9)   /* Back key */
 #define VM_KEY_HOME             (-10)    /* Key home */
 #define VM_KEY_END                (-11)    /* key end */
+#define VM_KEY_POWER          (-12)     /* Power key, not available on all PF */
 #define VM_KEY_NUM0           (48)      /* Number key 0 */
 #define VM_KEY_NUM1           (49)      /* Number key 1 */
 #define VM_KEY_NUM2           (50)      /* Number key 2 */

@@ -1,3 +1,26 @@
+/*
+  Wifi Xively sensor client
+ 
+ This sketch sends a simple time value to Xively (http://www.xively.com)
+ using Wi-Fi functionality on LinkIt platform.
+
+ Change the WIFI_AP, WIFI_PASSWORD and WIFI_AUTH accordingly.
+ 
+ To make it work, create a feed ID with a datastream first. 
+ Or change the code below to match your feed.
+
+ created 13 Mar 2012
+ modified 31 May 2012
+ by Tom Igoe
+ modified 8 Nov 2013
+ by Scott Fitzgerald
+ modified 20 Aug 2014
+ by MediaTek Inc.
+
+ This code is in the public domain.
+
+ */
+
 /*****************
  * This sample connectes to Xively.com API by LinkIt ONE WiFi module and keeps updating a feed in Xively.
  * You need to apply an Xively API key and create the feed first.

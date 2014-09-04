@@ -1,6 +1,3 @@
-#include <LGPRS.h>
-#include <LGPRSUdp.h>
-
 /*
 
  Udp NTP Client
@@ -14,14 +11,16 @@
  by Michael Margolis
  modified 9 Apr 2012
  by Tom Igoe
-
- modified 14 Aug 2014
- by Pablo Sun
- for LinkIt LGPRS UDP example
+ Modified 20 Aug 2014
+ by MediaTek Inc.
 
  This code is in the public domain.
 
  */
+ 
+#include <LGPRS.h>
+#include <LGPRSUdp.h>
+
 unsigned int localPort = 2390;      // local port to listen for UDP packets
 
 #define TIME_SERVER "time-c.nist.gov"  // a list of NTP servers: http://tf.nist.gov/tf-cgi/servers.cgi

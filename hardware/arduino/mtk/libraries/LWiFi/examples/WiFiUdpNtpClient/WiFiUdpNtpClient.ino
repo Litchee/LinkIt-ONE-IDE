@@ -1,6 +1,3 @@
-#include <LWiFi.h>
-#include <LWiFiUdp.h>
-
 /*
 
  Udp NTP Client
@@ -14,10 +11,8 @@
  by Michael Margolis
  modified 9 Apr 2012
  by Tom Igoe
-
- modified 14 Aug 2014
- by Pablo Sun
- for LinkIt ONE LWiFi UDP example
+ Modified 20 Aug 2014
+ by MediaTek Inc.
 
  This code is in the public domain.
 

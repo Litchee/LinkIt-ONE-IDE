@@ -17,6 +17,7 @@
  Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  
  Modified 23 November 2006 by David A. Mellis
+ Modified 20 Aug 2014 by MediaTek Inc.
  */
 
 #include <stdlib.h>

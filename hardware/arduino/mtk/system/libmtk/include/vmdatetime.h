@@ -89,6 +89,18 @@ VMINT vm_get_time(vm_time_t* time);
 
 /*****************************************************************************
  * FUNCTION
+ *  vm_set_time
+ * DESCRIPTION
+ *  set system time 
+ * PARAMETERS
+ *  time : [IN] time structure
+ * RETURNS
+ *  if succeed, return 0, otherwise return -1
+ *****************************************************************************/ 
+VMINT vm_set_time(vm_time_t* time);
+
+/*****************************************************************************
+ * FUNCTION
  *  vm_get_sys_time_zone
  * DESCRIPTION
  *  get system time zone 

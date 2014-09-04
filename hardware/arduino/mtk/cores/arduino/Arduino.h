@@ -15,6 +15,9 @@
   You should have received a copy of the GNU Lesser General Public
   License along with this library; if not, write to the Free Software
   Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+
+  Modified 20 Aug 2014 by MediaTek Inc.
+  
 */
 
 #ifndef Arduino_h
@@ -38,9 +41,7 @@
 extern "C"{
 #endif // __cplusplus
 
-// Includes Atmel CMSIS
 #include <chip.h>
-
 #include "wiring_constants.h"
 
 void yield(void);
@@ -48,6 +49,8 @@ void yield(void);
 /* sketch */
 extern void setup( void ) ;
 extern void loop( void ) ;
+
+
 extern boolean changePinType(uint32_t ulPin, uint32_t ulPinType, VM_DCL_HANDLE* handle);
 extern void spiPinsRest(void);
 extern void setPinHandle(uint32_t ulPin, VM_DCL_HANDLE handle);
@@ -58,6 +61,7 @@ typedef enum _EExt_Interrupts
   EXTERNAL_INT_1=1,
   EXTERNAL_NUM_INTERRUPTS
 } EExt_Interrupts ;
+
 
 typedef void (*voidFuncPtr)( void ) ;
 
@@ -72,6 +76,7 @@ typedef enum _EPioType
   PIO_SPI,
   PIO_UART,
   PIO_I2C,
+  PIO_SD,
   PIO_END
 } EPioType ;
 
@@ -104,20 +109,16 @@ extern PinDescription g_APinDescription[] ;
 
 #include "wiring.h"
 #include "wiring_digital.h"
-#include "wiring_analog.h" //jianying add
+#include "wiring_analog.h"
 #include "wiring_shift.h"
 #include "WInterrupts.h"
 
 #include "message.h"
 
-// USB Device
-//#define USB_VID            0x2341 // arduino LLC vid
+
 #define USB_PID_LEONARDO   0x0034
 #define USB_PID_MICRO      0x0035
 #define USB_PID_DUE        0x003E
-//#include "USB/USBDesc.h"
-//#include "USB/USBCore.h"
-//#include "USB/USBAPI.h"
 
 boolean noStopInterrupts(void);
 extern void spiPinsRest(void);

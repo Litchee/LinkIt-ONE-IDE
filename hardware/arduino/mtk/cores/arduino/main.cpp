@@ -15,6 +15,9 @@
   You should have received a copy of the GNU Lesser General Public
   License along with this library; if not, write to the Free Software
   Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+
+  Modified 20 Aug 2014 by MediaTek Inc.
+  
 */
 
 #define ARDUINO_MAIN
@@ -37,13 +40,11 @@ vm_call_listener_func g_call_status_callback = NULL;
 
 void __handle_sysevt(VMINT message, VMINT param) 
 {
-    //vm_log_info("receive msg = %d", message);
     if(message == VM_MSG_ARDUINO_CALL)
     {
     	 msg_struct* pMsg = (msg_struct*)param;
     	 if(pMsg->remote_func(pMsg->userdata))
         {
-        	//vm_log_info("post signal");
         	vm_signal_post(pMsg->signal);
     	 }
         return ;
@@ -63,11 +64,7 @@ VMINT32 __arduino_thread(VM_THREAD_HANDLE thread_handle, void* user_data)
 	init();
 
 	delay(1);
-
-	//#if defined(USBCON)
-	//	USBDevice.attach();
-	//#endif
-
+	
 	setup();
 
 	for (;;)

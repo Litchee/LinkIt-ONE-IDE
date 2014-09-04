@@ -1,20 +1,17 @@
 /*
-  Copyright (c) 2011 Arduino.  All right reserved.
+  Copyright (c) 2014 MediaTek Inc.  All right reserved.
 
   This library is free software; you can redistribute it and/or
   modify it under the terms of the GNU Lesser General Public
   License as published by the Free Software Foundation; either
-  version 2.1 of the License, or (at your option) any later version.
+  version 2.1 of the License..
 
   This library is distributed in the hope that it will be useful,
   but WITHOUT ANY WARRANTY; without even the implied warranty of
   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. 
-  See the GNU Lesser General Public License for more details.
-
-  You should have received a copy of the GNU Lesser General Public
-  License along with this library; if not, write to the Free Software
-  Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+   See the GNU Lesser General Public License for more details.
 */
+
 
 #ifndef _LINKITEEPROM_H
 #define _LINKITEEPROM_H
@@ -25,6 +22,7 @@
 /*****************************************************************************
  * Class LEEPROMClass
  ****************************************************************************/
+ 
 // LEEPROMClass is reading and writing to "permanent" storage 
 //
 // EXAMPLE:
@@ -61,7 +59,7 @@ public:
     // RETURNS
     // VMUINT8
 	// EXAMPLE
-	//	<code>
+	// <code>
     // #include <EEPROM.h>
     // int a = 0;
     // int value;
@@ -82,7 +80,7 @@ public:
     //     a = 0;
     //   delay(500);
     // }
-	//	</code> 
+	// </code> 
 	VMUINT8 read(
 	        int addr // addr:the location to read from, starting from 0 (int) 
 	        ); 
@@ -92,7 +90,7 @@ public:
     // RETURNS
     // VMUINT8
 	// EXAMPLE
-	//	<code>
+	// <code>
     // #include <EEPROM.h>
     // 
     // void setup()
@@ -104,14 +102,13 @@ public:
     // void loop()
     // {
     // }
-	//	</code> 
+	// </code> 
 	void write(
 	    int addr, // addr:the location to write to, starting from 0 (int)
 	    uint8_t value // value:the value to write, from 0 to 255 (byte)
 	    );
 };
 
-//extern LEEPROMClass EEPROM;
 extern LEEPROMClass & getEEPROM(void);
 #define EEPROM getEEPROM()
 

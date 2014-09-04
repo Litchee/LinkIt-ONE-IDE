@@ -1,37 +1,17 @@
-/*****************************************************************************
-*  Copyright Statement:
-*  --------------------
-*  This software is protected by Copyright and the information contained
-*  herein is confidential. The software may not be copied and the information
-*  contained herein may not be used or disclosed except with the written
-*  permission of MediaTek Inc. (C) 2005
-*
-*  BY OPENING THIS FILE, BUYER HEREBY UNEQUIVOCALLY ACKNOWLEDGES AND AGREES
-*  THAT THE SOFTWARE/FIRMWARE AND ITS DOCUMENTATIONS ("MEDIATEK SOFTWARE")
-*  RECEIVED FROM MEDIATEK AND/OR ITS REPRESENTATIVES ARE PROVIDED TO BUYER ON
-*  AN "AS-IS" BASIS ONLY. MEDIATEK EXPRESSLY DISCLAIMS ANY AND ALL WARRANTIES,
-*  EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE IMPLIED WARRANTIES OF
-*  MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE OR NONINFRINGEMENT.
-*  NEITHER DOES MEDIATEK PROVIDE ANY WARRANTY WHATSOEVER WITH RESPECT TO THE
-*  SOFTWARE OF ANY THIRD PARTY WHICH MAY BE USED BY, INCORPORATED IN, OR
-*  SUPPLIED WITH THE MEDIATEK SOFTWARE, AND BUYER AGREES TO LOOK ONLY TO SUCH
-*  THIRD PARTY FOR ANY WARRANTY CLAIM RELATING THERETO. MEDIATEK SHALL ALSO
-*  NOT BE RESPONSIBLE FOR ANY MEDIATEK SOFTWARE RELEASES MADE TO BUYER'S
-*  SPECIFICATION OR TO CONFORM TO A PARTICULAR STANDARD OR OPEN FORUM.
-*
-*  BUYER'S SOLE AND EXCLUSIVE REMEDY AND MEDIATEK'S ENTIRE AND CUMULATIVE
-*  LIABILITY WITH RESPECT TO THE MEDIATEK SOFTWARE RELEASED HEREUNDER WILL BE,
-*  AT MEDIATEK'S OPTION, TO REVISE OR REPLACE THE MEDIATEK SOFTWARE AT ISSUE,
-*  OR REFUND ANY SOFTWARE LICENSE FEES OR SERVICE CHARGE PAID BY BUYER TO
-*  MEDIATEK FOR SUCH MEDIATEK SOFTWARE AT ISSUE.
-*
-*  THE TRANSACTION CONTEMPLATED HEREUNDER SHALL BE CONSTRUED IN ACCORDANCE
-*  WITH THE LAWS OF THE STATE OF CALIFORNIA, USA, EXCLUDING ITS CONFLICT OF
-*  LAWS PRINCIPLES.  ANY DISPUTES, CONTROVERSIES OR CLAIMS ARISING THEREOF AND
-*  RELATED THERETO SHALL BE SETTLED BY ARBITRATION IN SAN FRANCISCO, CA, UNDER
-*  THE RULES OF THE INTERNATIONAL CHAMBER OF COMMERCE (ICC).
-*
-*****************************************************************************/
+/*
+  Copyright (c) 2014 MediaTek Inc.  All right reserved.
+
+  This library is free software; you can redistribute it and/or
+  modify it under the terms of the GNU Lesser General Public
+  License as published by the Free Software Foundation; either
+  version 2.1 of the License..
+
+  This library is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. 
+   See the GNU Lesser General Public License for more details.
+*/
+
 #include "arduino.h"
 #include "LBT.h"
 #include "Vmbtcm.h"
@@ -51,7 +31,7 @@
 #define FILE_PATH_SIZE 16
 #define SPP_DATA "Hello SPP!"
 #ifdef LBT_DEBUG
-#define APP_LOG(...) app_log_file(__VA_ARGS__); \ 
+#define APP_LOG(...) app_log_file(__VA_ARGS__); \
     vm_log_info(__VA_ARGS__)
 #else
 #define APP_LOG(...)
@@ -75,18 +55,13 @@ void app_log_file(char *fmt, ...)
 
     va_start( args, fmt );
     vm_get_time(&time);
-    //ret = va_arg(args, int);
     vm_sprintf(buf+strlen(buf), "[%02d:%02d:%02d]", time.hour, time.min, time.sec);
     vm_vsprintf(buf+strlen(buf), fmt, args);
         
     drv = vm_get_removable_driver() > 0 ? vm_get_removeable_driver() : vm_get_system_driver();
     vm_sprintf(path, "%c:\\%s", drv, BT_NAME".log");
-    
-    //vm_log_debug(path);
+
     vm_gb2312_to_ucs2(wpath, sizeof(wpath), path); 
-    //file[0] = (VMWCHAR)drv;
-    //vm_wsprintf(file, FILE_PATH_SIZE, L"%c:\\%s", 
-    //vm_wstrcat(&file[1], (VMWSTR)L":\\spp_svr.log");
     hdl = vm_file_open(wpath, MODE_APPEND, 0);
     if (hdl < 0)
         hdl = vm_file_open(wpath, MODE_CREATE_ALWAYS_WRITE, 0);
@@ -98,19 +73,15 @@ void app_log_file(char *fmt, ...)
             vm_file_delete(wpath);
             flag_delete_log = 1;
             hdl = vm_file_open(wpath, MODE_CREATE_ALWAYS_WRITE, 0);
-            //return;
         }
     }
-    //vm_file_seek(hdl, 0, BASE_END);
+    
     vm_file_write(hdl, buf, LOG_BUF_SIZE, &written);
     vm_file_close(hdl);
 
     va_end( args );						
 }
 
-
-//APP_LOG("receive msg = %d", message);
-//APP_LOG((char*)"open failed");
 
 #define SPP_UUID 0x1101
 #define MAX_DEVICE_SCANNED 10
@@ -149,7 +120,6 @@ btClientContext::btClientContext(int x, int y)
     btspp_hdl = -1;
     btspp_buf_size = -0;
     btspp_buf = NULL;
-    //client_status(BT_CLIENT_IDLE),
     scan_number = 0;
     conn_id = -1;
     waiting_result_p = NULL;
@@ -186,7 +156,6 @@ static void bt_client_btcm_cb(VMUINT evt, void * param, void * user_data)
                     if(bt_client_end_spp())
                     {
                         
-                        //LTask.post_signal();
                         g_clientContext.ptr->post_signal();
                         
                     }
@@ -196,7 +165,6 @@ static void bt_client_btcm_cb(VMUINT evt, void * param, void * user_data)
                     *(g_clientContext.waiting_result_p) = true;
                     g_clientContext.waiting_result_p = NULL;
                     
-                    //LTask.post_signal();
                     g_clientContext.ptr->post_signal();
                     
                 }
@@ -208,7 +176,6 @@ static void bt_client_btcm_cb(VMUINT evt, void * param, void * user_data)
 
                 if(VM_SRV_BT_CM_RESULT_SUCCESS == ret)
                 {
-                    //wait for callback to process
                     g_clientContext.client_status = BT_CLIENT_POWERING_OFF;
                 }
                 else
@@ -311,12 +278,6 @@ static void bt_client_btcm_cb(VMUINT evt, void * param, void * user_data)
                 
                 }
             }
-            /*if (10 == g_clientContext.scan_number)
-            {
-                vm_btcm_search_abort();
-                g_clientContext.ptr->post_signal();
-            }*/
-
             break;
         }
 
@@ -326,7 +287,6 @@ static void bt_client_btcm_cb(VMUINT evt, void * param, void * user_data)
 
             *(g_clientContext.scan_number_p) = g_clientContext.scan_number;
             
-            //LTask.post_signal();
             g_clientContext.ptr->post_signal();
             
             break;
@@ -350,12 +310,10 @@ static void bt_client_btcm_cb(VMUINT evt, void * param, void * user_data)
 
 static int bt_client_spp_read(void* data)
 {
-	  //char readdata[LBT_SERIAL_BUFFER_SIZE];
 	  VMINT ret = 0;
 	  VMINT i = 0;
     if(g_clientContext.conn_id < 0)
     {
-        //not connected yet
 
         APP_LOG((char*)"[BTC]bt_client_spp_read : not connected yet");
 
@@ -404,7 +362,6 @@ static void bt_client_spp_cb(VMUINT evt, void * param, void * user_data)
         {
             if (cntx->ret)
             {
-                //connect successfully
                 if(g_clientContext.waiting_result_p != NULL)
                 {
                     *(g_clientContext.waiting_result_p) = true;
@@ -413,7 +370,6 @@ static void bt_client_spp_cb(VMUINT evt, void * param, void * user_data)
             }
             else
             {
-                //connnet fail
                 if(g_clientContext.waiting_result_p != NULL)
                 {
                     *(g_clientContext.waiting_result_p) = false;
@@ -423,8 +379,6 @@ static void bt_client_spp_cb(VMUINT evt, void * param, void * user_data)
             if(g_clientContext.waiting_result_p != NULL)
             {
                 g_clientContext.waiting_result_p = NULL;
-                
-                //LTask.post_signal();
                 g_clientContext.ptr->post_signal();
                 
             }
@@ -525,7 +479,6 @@ static boolean bt_client_end_spp()
 
         if(VM_SRV_BT_CM_RESULT_SUCCESS == ret)
         {
-            //wait for callback to process
             g_clientContext.client_status = BT_CLIENT_POWERING_OFF;
 
             APP_LOG("[BTC]bt_client_end_spp, wait for power off bt 1");
@@ -574,10 +527,6 @@ boolean btClientBegin(void *userData)
 
     LBTClientBeginContext* c = (LBTClientBeginContext*) userData;
     g_clientContext.ptr = (LBTClientClass*)c->ptr;
-    if(c->is_set_pin == true)
-    {
-        vm_custom_set_bt_pairing_method(VM_PIN_AND_SSP);
-    }
     if(g_clientContext.btcm_hdl >= 0)
     {
         //already inited
@@ -600,13 +549,11 @@ boolean btClientBegin(void *userData)
 
     if(g_clientContext.btcm_hdl < 0)
     {
-        //init btcm fail
         c->result = false;
         APP_LOG((char*)"[BTC]btClientBegin fail : btcm_init fail");
         return true;
     }
 
-    //return true;
 
     VMINT ret = vm_btcm_get_power_status();
 
@@ -687,7 +634,10 @@ boolean btClientConnect(void *userData)
         pContext->result = false;
         return true;        
     }
-
+    if(pContext->is_set_pin == true)
+    {
+        vm_custom_set_bt_pairing_method(VM_PIN_AND_SSP);
+    }
     vm_srv_bt_cm_bt_addr btspp_addr = {0};
     btspp_addr.lap = ((0x000000ff & (VMUINT)pContext->address->lap[2]) << 16) | 
         ((0x000000ff & (VMUINT)pContext->address->lap[1]) << 8) | 
@@ -706,9 +656,6 @@ boolean btClientConnect(void *userData)
         g_clientContext.btspp_buf_size/2, 
         SPP_UUID);
 
-    //LBTAddress tmp_addr = {0};
-    
-    //memcpy(&tmp_addr, &btspp_addr, sizeof(LBTAddress));
 
     APP_LOG("[BTC]btClientConnect ret[%d], address: %02x:%02x:%02x:%02x:%02x:%02x:", 
                 ret,
@@ -760,7 +707,6 @@ static void bt_client_timeout_cb(VMINT tid)
         vm_btcm_search_abort();
         vm_delete_timer(g_clientContext.search_tid);
         g_clientContext.search_tid = 0;
-        //g_clientContext.ptr->post_signal();
     }
 }
 boolean btClientScan(void *userData)

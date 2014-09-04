@@ -1,20 +1,17 @@
 /*
-  Copyright (c) 2011 Arduino.  All right reserved.
+  Copyright (c) 2014 MediaTek Inc.  All right reserved.
 
   This library is free software; you can redistribute it and/or
   modify it under the terms of the GNU Lesser General Public
   License as published by the Free Software Foundation; either
-  version 2.1 of the License, or (at your option) any later version.
+  version 2.1 of the License..
 
   This library is distributed in the hope that it will be useful,
   but WITHOUT ANY WARRANTY; without even the implied warranty of
   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. 
-  See the GNU Lesser General Public License for more details.
-
-  You should have received a copy of the GNU Lesser General Public
-  License along with this library; if not, write to the Free Software
-  Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+   See the GNU Lesser General Public License for more details.
 */
+
 
 #ifndef LBTSERVER_H
 #define LBTSERVER_H
@@ -95,17 +92,20 @@ public:
 
     // DESCRIPTION
     //    init BT module and setup a SPP server instance
+    // PARAMETERS
+    //    name: device name to set 
+    //    pinCode: BT2.0 pincode, if you set it as const string, LinkOne can communicate BT2.0 device.
     // RETURNS
     //    true: success
     //    false: fail
 	// EXAMPLE
-	//	<code>
+	// <code>
     // #include <LBTServer.h>
     //   
     // void setup()
     // {
     //   Serial.begin(9600);
-    //   bool success = LBTServer.begin("LBTServer");
+    //   bool success = LBTServer.begin((uint8_t*)"LBTServer"); //bool success = LBTServer.begin((uint8_t*)"BTServer",(uint8_t*)"1234");
     //   if( !success )
     //   {
     //       Serial.println("Cannot begin Bluetooth Server successfully");
@@ -123,61 +123,10 @@ public:
     //   
     // }
     // 
-    // connected
-    // #include <LBT.h>
-    // #include <LBTServer.h>
-    //   
-    // void setup()
-    // {
-    //   Serial.begin(9600);
-    //   bool success = LBTServer.begin();
-    //   if( !success )
-    //   {
-    //       Serial.println("Cannot begin Bluetooth Server successfully");
-    //       // don't do anything else
-    //       while(true);
-    //   }
-    //   else
-    //   {
-    //       Serial.println("Bluetooth Server begin successfully");
-    //   }
-    //  
-    // }
-    //  
-    // void loop()
-    // {
-    // ¡¡¡¡ if(!LBTServer.connected())
-    //     {
-    //        // waiting for Spp Client to connect
-    //        bool connected = LBTServer.accept(20);
-    //  
-    //        if( !connected )
-    //        {
-    //            Serial.println("No connection request yet");
-    //            // don't do anything else
-    //            while(true);
-    //        }
-    //        else
-    //        {
-    //            Serial.println("Connected");
-    //        }
-    //     }
-    //     else
-    //     {
-    //         char buffer[10];
-    //         int read_size = LBTServer.read((uint8_t*)buffer, 10);
-    //         if(read_size > 0)
-    //         {
-    //             Serial.print("size read: ");
-    //             Serial.println(read_size);
-    //             Serial.println(buffer);
-    //         }
-    //     }
-    // }
-	//	</code> 
+	// </code> 
     boolean begin(
            const uint8_t* name = NULL,   //[IN] device name to set
-           const uint8_t* pinCode = NULL
+           const uint8_t* pinCode = NULL //[IN] BT2.0 pincode
         );
 
     // DESCRIPTION
@@ -185,7 +134,7 @@ public:
     // RETURNS
     //    None
 	// EXAMPLE
-	//	<code>
+	// <code>
     // #include <LBTServer.h>
     //   
     // void setup()
@@ -210,49 +159,19 @@ public:
     // {
     //   
     // }
-    // 
-    // getHostDeviceInfo
-    // #include <LBT.h>
-    // #include <LBTServer.h>
-    //  
-    // void setup()
-    // {
-    //   Serial.begin(9600);
-    //   bool success = LBTServer.begin("LBTServer");
-    //   if( !success )
-    //   {
-    //       Serial.println("Cannot begin Bluetooth Server successfully");
-    //       // don't do anything else
-    //       while(true);
-    //   }
-    //   else
-    //   {
-    //       Serial.println("Bluetooth Server begin successfully");
-    //       LBTDeviceInfo info = {0};
-    //       bool success = LBTServer.getHostDeviceInfo(i, &info);
-    //       if( success )
-    //       {
-    //           Serial.print("Device name:" );
-    //           Serial.println(info.name);
-    //       }
-    //   }
-    // }
-    //  
-    // void loop()
-    // {
-    //   
-    // }
-	//	</code> 
+	// </code> 
     void end(void);
 
     // DESCRIPTION
     //    accept SPP client's connection request. 
     //    returns as long as the connection is made or timeout
+    // PARAMETERS
+    //    time_out: timeout for accept action.
     // RETURNS
     //    true: success
     //    false: fail
 	// EXAMPLE
-	//	<code>
+	// <code>
     // #include <LBT.h>
     // #include <LBTServer.h>
     //   
@@ -290,19 +209,22 @@ public:
     // {
     //  
     // }
-	//	</code> 
+	// </code> 
     boolean accept(
             size_t time_out = 20  //[IN] time out duration while waiting for SPP client's connection request
         );
         
     // DESCRIPTION
-    //    accept SPP client's connection request. 
+    //    accept SPP client's connection request on spencified BT address.
     //    returns as long as the connection is made or timeout
+    // PARAMETERS
+    //    time_out: timeout for accept action.
+    //    MACAddr: string format (const char *), the format is like "12:34:56:ab:cd:ef".
     // RETURNS
     //    true: success
     //    false: fail
 	// EXAMPLE
-	//	<code>
+	// <code>
     // #include <LBT.h>
     // #include <LBTServer.h>
     //   
@@ -322,7 +244,7 @@ public:
     //   }
     //  
     //   // waiting for Spp Client to connect
-    //   bool connected = LBTServer.accept(20, "1234:56:abcdef");
+    //   bool connected = LBTServer.accept(20, "12:34:56:ab:cd:ef");
     //  
     //   if( !connected )
     //   {
@@ -340,10 +262,11 @@ public:
     // {
     //  
     // }
-	//	</code> 
+	// </code> 
     boolean accept(
             size_t time_out,  //[IN] time out duration while waiting for SPP client's connection request
-            const char *MACAddr);
+            const char *MACAddr // [IN] string format (const char *), the format is like "12:34:56:ab:cd:ef".
+            );
 
     // DESCRIPTION
     //    check if any SPP client is conneccted
@@ -351,7 +274,7 @@ public:
     //    true: yes
     //    false: no
 	// EXAMPLE
-	//	<code>
+	// <code>
     // #include <LBT.h>
     // #include <LBTServer.h>
     //   
@@ -402,7 +325,7 @@ public:
     //         }
     //     }
     // }
-	//	</code> 
+	// </code> 
     boolean connected(void);
 
     // DESCRIPTION
@@ -411,7 +334,7 @@ public:
     //    true: success
     //    false : fail. Possible reasons are index not reasonable or never scanned before
 	// EXAMPLE
-	//	<code>
+	// <code>
 	// #include <LBT.h>
     // #include <LBTServer.h>
     //  
@@ -442,7 +365,7 @@ public:
     // {
     //   
     // }
-	//	</code> 
+	// </code> 
 	boolean getHostDeviceInfo(
             LBTDeviceInfo* dev_info    // [OUT] device info acquired
         );
@@ -453,7 +376,7 @@ public:
     //    number of bytes read
     //    0 for no data to read
 	// EXAMPLE
-	//	<code>
+	// <code>
     // #include <LBT.h>
     // #include <LBTServer.h>
     //  
@@ -498,7 +421,7 @@ public:
     //         Serial.println(buffer);
     //     }
     // }
-	//	</code> 
+	// </code> 
 
     int read(void);
 
@@ -508,7 +431,7 @@ public:
     //    number of bytes written
     //    0 for write fail
 	// EXAMPLE
-	//	<code>
+	// <code>
     // #include <LBT.h>
     // #include <LBTServer.h>
     //  
@@ -552,7 +475,7 @@ public:
     //         Serial.println(write_size);
     //     }
     // }
-	//	</code> 
+	// </code> 
     size_t write(
             const uint8_t* buf,    // [IN] daat to write
             size_t size = 1    // [IN] size of the buffer
@@ -572,14 +495,12 @@ public:
     int peek(void);
     
  //  waits for the transmission of outgoing serial data to complete
- //
- // RETURNS none    
     void flush(void);
     
 // write a char 
 //
 // RETURNS
-// the number of write    
+// 1 for write success, 0 for write fail   
     size_t write(const uint8_t data  //[IN] input char
                 );
                 
@@ -594,6 +515,7 @@ private:
     VM_SIGNAL_ID m_signal_read;
 };
 
+// the LBTServerClass object
 extern LBTServerClass LBTServer;
 
 #endif //#ifndef LBTSERVER_H

@@ -14,6 +14,8 @@
   You should have received a copy of the GNU Lesser General Public
   License along with this library; if not, write to the Free Software
   Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+  
+  Modified 20 Aug 2014 by MediaTek Inc.
 */
 
 #ifndef _WIRING_MATH_
@@ -58,7 +60,6 @@ extern long random(long max) ;
  *    random
  * DESCRIPTION
  *   The random function generates pseudo-random numbers. 
- *   That is, a value of fromLow would get mapped to toLow, a value of fromHigh to toHigh, values in-between to values in-between, etc. 
  * PARAMETERS
  *   min: lower bound of the random value, inclusive (optional) 
  *   max: upper bound of the random value, exclusive 
@@ -74,7 +75,6 @@ extern long random(long min, long max) ;
  *    randomSeed
  * DESCRIPTION
  *   randomSeed() initializes the pseudo-random number generator, causing it to start at an arbitrary point in its random sequence. 
- *   This sequence, while very long, and random, is always the same. 
  * PARAMETERS
  *   dwSeed: pass a number to generate the seed. 
  * RETURNS

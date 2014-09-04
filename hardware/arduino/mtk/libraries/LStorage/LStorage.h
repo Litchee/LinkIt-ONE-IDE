@@ -1,37 +1,17 @@
-/*****************************************************************************
-*  Copyright Statement:
-*  --------------------
-*  This software is protected by Copyright and the information contained
-*  herein is confidential. The software may not be copied and the information
-*  contained herein may not be used or disclosed except with the written
-*  permission of MediaTek Inc. (C) 2005
-*
-*  BY OPENING THIS FILE, BUYER HEREBY UNEQUIVOCALLY ACKNOWLEDGES AND AGREES
-*  THAT THE SOFTWARE/FIRMWARE AND ITS DOCUMENTATIONS ("MEDIATEK SOFTWARE")
-*  RECEIVED FROM MEDIATEK AND/OR ITS REPRESENTATIVES ARE PROVIDED TO BUYER ON
-*  AN "AS-IS" BASIS ONLY. MEDIATEK EXPRESSLY DISCLAIMS ANY AND ALL WARRANTIES,
-*  EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE IMPLIED WARRANTIES OF
-*  MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE OR NONINFRINGEMENT.
-*  NEITHER DOES MEDIATEK PROVIDE ANY WARRANTY WHATSOEVER WITH RESPECT TO THE
-*  SOFTWARE OF ANY THIRD PARTY WHICH MAY BE USED BY, INCORPORATED IN, OR
-*  SUPPLIED WITH THE MEDIATEK SOFTWARE, AND BUYER AGREES TO LOOK ONLY TO SUCH
-*  THIRD PARTY FOR ANY WARRANTY CLAIM RELATING THERETO. MEDIATEK SHALL ALSO
-*  NOT BE RESPONSIBLE FOR ANY MEDIATEK SOFTWARE RELEASES MADE TO BUYER'S
-*  SPECIFICATION OR TO CONFORM TO A PARTICULAR STANDARD OR OPEN FORUM.
-*
-*  BUYER'S SOLE AND EXCLUSIVE REMEDY AND MEDIATEK'S ENTIRE AND CUMULATIVE
-*  LIABILITY WITH RESPECT TO THE MEDIATEK SOFTWARE RELEASED HEREUNDER WILL BE,
-*  AT MEDIATEK'S OPTION, TO REVISE OR REPLACE THE MEDIATEK SOFTWARE AT ISSUE,
-*  OR REFUND ANY SOFTWARE LICENSE FEES OR SERVICE CHARGE PAID BY BUYER TO
-*  MEDIATEK FOR SUCH MEDIATEK SOFTWARE AT ISSUE.
-*
-*  THE TRANSACTION CONTEMPLATED HEREUNDER SHALL BE CONSTRUED IN ACCORDANCE
-*  WITH THE LAWS OF THE STATE OF CALIFORNIA, USA, EXCLUDING ITS CONFLICT OF
-*  LAWS PRINCIPLES.  ANY DISPUTES, CONTROVERSIES OR CLAIMS ARISING THEREOF AND
-*  RELATED THERETO SHALL BE SETTLED BY ARBITRATION IN SAN FRANCISCO, CA, UNDER
-*  THE RULES OF THE INTERNATIONAL CHAMBER OF COMMERCE (ICC).
-*
-*****************************************************************************/
+/*
+  Copyright (c) 2014 MediaTek Inc.  All right reserved.
+
+  This library is free software; you can redistribute it and/or
+  modify it under the terms of the GNU Lesser General Public
+  License as published by the Free Software Foundation; either
+  version 2.1 of the License..
+
+  This library is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. 
+   See the GNU Lesser General Public License for more details.
+*/
+
 
 
 #ifndef _LINKITSTORAGE_h
@@ -56,11 +36,13 @@ class LFile : public Stream
 {
     friend class LSDClass;
 
+/* DOM-NOT_FOR_SDK-BEGIN */	
 // Constructor / Destructor    
 public:
     LFile(unsigned int fd, boolean isdir, char drv, const char *name); // wraps an underlying SdFile
     LFile(void);                           // 'empty' constructor
     ~LFile(void);                          // destructor
+/* DOM-NOT_FOR_SDK-END */	
 
 // Method
 public:
@@ -113,9 +95,10 @@ public:
 
 	// DESCRIPTION
 	//  Changes the cursor position; can be number from 0 to the size of file.
-    //  Use read() to retrieve the content on the current position and move cursor at the same time.
-    //  Use peek() to retrieve content on the current position without moving the cursor.
-    //  Use position() to get the current cursor position.
+	//
+    //  * Use read() to retrieve the content on the current position and move cursor at the same time.
+    //  * Use peek() to retrieve content on the current position without moving the cursor.
+    //  * Use position() to get the current cursor position.
 	// RETURNS
 	//  true: Succeed
 	//  false: Fail. The position is not changed.
@@ -125,9 +108,10 @@ public:
 
 	// DESCRIPTION
 	//  Returns the position of file cursor.
-    //  Use read() to retrieve content from the current position and move cursor at the same time.
-    //  Use peek() to retrieve content from the current position without moving the cursor.
-    //  Use seek() to change the cursor position.
+	//
+    //  * Use read() to retrieve content from the current position and move cursor at the same time.
+    //  * Use peek() to retrieve content from the current position without moving the cursor.
+    //  * Use seek() to change the cursor position.
 	// RETURNS
 	//  Current position of file cursor
     uint32_t position();
@@ -209,8 +193,10 @@ public:
 	// DESCRIPTION
 	//  Opens a file (or folder).
     //  When the file path does not exist: If FILE_WRITE mode is given, an empty file will be created; if FILE_READ mode is given, it will simply return "fail".
-    //  FILE_READ: Read only, cannot write, starting from the beginning of file (so that you can read its content from the beginning)
-    //  FILE_WRITE: Can read and write, starting from the end of file (so that when you write data it will append to tail). 
+    //
+    //  * FILE_READ: Read only, cannot write, starting from the beginning of file (so that you can read its content from the beginning)
+    //  * FILE_WRITE: Can read and write, starting from the end of file (so that when you write data it will append to tail). 
+    //
 	// RETURNS
 	//  An LFile object to represent the file (or folder)
     //  If the opening fails. it will return an empty LFile object. An empty LFile object can be evaluated as false, so you can use "if (f)" to test the result.

@@ -1,37 +1,17 @@
-/*****************************************************************************
-*  Copyright Statement:
-*  --------------------
-*  This software is protected by Copyright and the information contained
-*  herein is confidential. The software may not be copied and the information
-*  contained herein may not be used or disclosed except with the written
-*  permission of MediaTek Inc. (C) 2005
-*
-*  BY OPENING THIS FILE, BUYER HEREBY UNEQUIVOCALLY ACKNOWLEDGES AND AGREES
-*  THAT THE SOFTWARE/FIRMWARE AND ITS DOCUMENTATIONS ("MEDIATEK SOFTWARE")
-*  RECEIVED FROM MEDIATEK AND/OR ITS REPRESENTATIVES ARE PROVIDED TO BUYER ON
-*  AN "AS-IS" BASIS ONLY. MEDIATEK EXPRESSLY DISCLAIMS ANY AND ALL WARRANTIES,
-*  EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE IMPLIED WARRANTIES OF
-*  MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE OR NONINFRINGEMENT.
-*  NEITHER DOES MEDIATEK PROVIDE ANY WARRANTY WHATSOEVER WITH RESPECT TO THE
-*  SOFTWARE OF ANY THIRD PARTY WHICH MAY BE USED BY, INCORPORATED IN, OR
-*  SUPPLIED WITH THE MEDIATEK SOFTWARE, AND BUYER AGREES TO LOOK ONLY TO SUCH
-*  THIRD PARTY FOR ANY WARRANTY CLAIM RELATING THERETO. MEDIATEK SHALL ALSO
-*  NOT BE RESPONSIBLE FOR ANY MEDIATEK SOFTWARE RELEASES MADE TO BUYER'S
-*  SPECIFICATION OR TO CONFORM TO A PARTICULAR STANDARD OR OPEN FORUM.
-*
-*  BUYER'S SOLE AND EXCLUSIVE REMEDY AND MEDIATEK'S ENTIRE AND CUMULATIVE
-*  LIABILITY WITH RESPECT TO THE MEDIATEK SOFTWARE RELEASED HEREUNDER WILL BE,
-*  AT MEDIATEK'S OPTION, TO REVISE OR REPLACE THE MEDIATEK SOFTWARE AT ISSUE,
-*  OR REFUND ANY SOFTWARE LICENSE FEES OR SERVICE CHARGE PAID BY BUYER TO
-*  MEDIATEK FOR SUCH MEDIATEK SOFTWARE AT ISSUE.
-*
-*  THE TRANSACTION CONTEMPLATED HEREUNDER SHALL BE CONSTRUED IN ACCORDANCE
-*  WITH THE LAWS OF THE STATE OF CALIFORNIA, USA, EXCLUDING ITS CONFLICT OF
-*  LAWS PRINCIPLES.  ANY DISPUTES, CONTROVERSIES OR CLAIMS ARISING THEREOF AND
-*  RELATED THERETO SHALL BE SETTLED BY ARBITRATION IN SAN FRANCISCO, CA, UNDER
-*  THE RULES OF THE INTERNATIONAL CHAMBER OF COMMERCE (ICC).
-*
-*****************************************************************************/
+/*
+  Copyright (c) 2014 MediaTek Inc.  All right reserved.
+
+  This library is free software; you can redistribute it and/or
+  modify it under the terms of the GNU Lesser General Public
+  License as published by the Free Software Foundation; either
+  version 2.1 of the License..
+
+  This library is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. 
+   See the GNU Lesser General Public License for more details.
+*/
+
 #include "LStorage.h"
 
 #include "vmio.h"
@@ -111,12 +91,27 @@ static boolean _conv_path_back(const VMWCHAR* filepath, char *filepath_buf)
     return true;
 }
 
-VMUINT mode_map(uint8_t mode)
+VMFILE linkit_file_open(const VMWSTR filename, VMUINT mode)
 {
-    if(mode == FILE_WRITE)
-        return MODE_CREATE_ALWAYS_WRITE;
+    if(mode == FILE_READ)
+    {
+        return vm_file_open(filename, MODE_READ, TRUE);
+    }
+    else if(mode == FILE_WRITE)
+    {
+        if(vm_file_get_attributes(filename) < 0)
+        {
+            return vm_file_open(filename, MODE_CREATE_ALWAYS_WRITE, TRUE);
+        }
+        else
+        {
+            VMFILE fd = vm_file_open(filename, MODE_WRITE, TRUE);
+            vm_file_seek(fd, 0, BASE_END);
+            return fd;
+        }
+    }
     else
-        return MODE_READ;
+        return -1;
 }
 
 /*****************************************************************************
@@ -380,7 +375,7 @@ void LFile::close()
 {
     linkit_file_general_struct data;
     
-    if(!_fd || _isDir)
+    if(!_fd)
         return;
 
     flush();
@@ -397,7 +392,7 @@ void LFile::close()
 
 LFile::operator bool()
 {
-    return _fd ? true : false;
+    return (_fd || _isDir) ? true : false;
 }
 
 LFile& LFile::operator=(const LFile& other)
@@ -433,7 +428,7 @@ boolean LFile::isDirectory(void)
 
 LFile LFile::openNextFile(uint8_t mode)
 {
-    linkit_file_find_struct data;
+    linkit_file_find_struct data = {0};
     if (!_isDir)
         return LFile();
         
@@ -644,6 +639,7 @@ boolean linkit_file_find_handler(void* userdata)
         LSLOG("[find]dir");
         data->is_dir = true;
         data->result = 0;
+        data->fd = 0;
     }
     else if(attr < 0) // special case for SD label entry
     {
@@ -653,12 +649,13 @@ boolean linkit_file_find_handler(void* userdata)
 #endif
         data->is_dir = true;
         data->result = 0;        
+        data->fd = 0;
     }
     else
     {
         LSLOG("[find]file");
         data->is_dir = false;
-        data->result = vm_file_open(filepath_buf, mode_map(data->mode), TRUE);
+        data->result = linkit_file_open(filepath_buf, data->mode);
         if(data->result < 0)
         {
             REF(data->findhdl)--;
@@ -840,7 +837,7 @@ boolean linkit_drv_read_handler(void* userdata)
     else
     {
         data->is_dir = false;
-        fd = vm_file_open(filepath_buf, mode_map(data->mode), TRUE);
+        fd = linkit_file_open(filepath_buf, data->mode);
         if (fd > 0)
         {
             LSLOG("open ok (file)");

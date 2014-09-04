@@ -127,6 +127,9 @@ typedef struct
   VMUINT8       u1HOUR;              /* 0~23*/
   VMUINT8       u1MIN;               /* 0~59*/ 
   VMUINT8       u1SEC;               /* 0~59*/ 
+  double	Latitude;				/*Latitude South<0	North>0*/
+  double	Longitude;				/*Longitude West<0 east>0*/ 
+  double	Altitude;                          /* m */
 }vm_gps_assist_data_cfg;
 
 /*GPS callback message*/

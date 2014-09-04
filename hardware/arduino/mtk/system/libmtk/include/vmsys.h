@@ -285,6 +285,9 @@ typedef enum
 void vm_sla_custom_logging(VMSTR custom_label, vm_sla_action_type action);
 
 #define vm_get_mre_total_mem_size vm_get_total_mem_size
+
+
+VMUINT vm_get_total_heap_size(void);
 /* DOM-NOT_FOR_SDK-END */
 
 /*****************************************************************************

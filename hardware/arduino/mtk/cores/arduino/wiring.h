@@ -14,6 +14,8 @@
   You should have received a copy of the GNU Lesser General Public
   License along with this library; if not, write to the Free Software
   Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+
+  Modified 20 Aug 2014 by MediaTek Inc.
 */
 
 #ifndef _WIRING_
@@ -38,18 +40,18 @@ extern void init( void ) ;
  * RETURNS
  * uint32_t:Time from LinkIt enabling the current program to the present in ms.
  * EXAMPLE
- *	<code>
- *	uint32_t t;
- *	void setup()
- *  {
- *    
- *  }
- *	void loop()
- *  {
- *    t = millis();
- *    delay(2000);
- *  }
- *	</code> 
+ * <code>
+ * uint32_t t;
+ * void setup()
+ * {
+ * 
+ * }
+ * void loop()
+ * {
+ *     t = millis();
+ *     delay(2000);
+ * }
+ * </code> 
 *****************************************************************************/
 extern uint32_t millis( void ) ;
 
@@ -63,18 +65,18 @@ extern uint32_t millis( void ) ;
  * RETURNS
  * uint32_t:Time from LinkIt enabling the current program to the present in us.
  * EXAMPLE
- *	<code>
- *	uint32_t t;
- *	void setup()
- *  {
- *    
- *  }
- *	void loop()
- *  {
- *    t = micros();
- *    delay(2000);
- *  }
- *	</code> 
+ * <code>
+ * uint32_t t;
+ * void setup()
+ * {
+ * 
+ * }
+ * void loop()
+ * {
+ *     t = micros();
+ *     delay(2000);
+ * }
+ * </code> 
 *****************************************************************************/
 extern uint32_t micros( void ) ;
 
@@ -85,23 +87,21 @@ extern uint32_t micros( void ) ;
  *  Pauses the program by setting up parameter to designate time to pause(unit:ms)
  * PARAMETERS
  *  dwMs: Time to pause in ms
- * RETURNS
- * none
  * EXAMPLE
- *	<code>
- *	int led = 13;
- *	void setup()
- *  {
+ * <code>
+ * int led = 13;
+ * void setup()
+ * {
  *     pinMode(led,OUTPUT);
- *  }
- *	void loop()
- *  {
- *    digitalWrite(led,HIGH);
- *    delay(1000);
- *    digitalWrite(led,LOW);
- *    delay(1000);
- *  }
- *	</code> 
+ * }
+ * void loop()
+ * {
+ *     digitalWrite(led,HIGH);
+ *     delay(1000);
+ *     digitalWrite(led,LOW);
+ *     delay(1000);
+ * }
+ * </code> 
 *****************************************************************************/
 extern void delay( uint32_t dwMs ) ;
 
@@ -112,23 +112,21 @@ extern void delay( uint32_t dwMs ) ;
  *  Pauses the program by setting up parameter to designate time to pause(unit:us)
  * PARAMETERS
  *  usec: Time to pause in us
- * RETURNS
- * none
  * EXAMPLE
- *	<code>
- *	int led = 13;
- *	void setup()
- *  {
+ * <code>
+ * int led = 13;
+ * void setup()
+ * {
  *     pinMode(led,OUTPUT);
- *  }
- *	void loop()
- *  {
- *    digitalWrite(led,HIGH);
- *    delayMicroseconds(1000);
- *    digitalWrite(led,LOW);
- *    delayMicroseconds(1000);
- *  }
- *	</code> 
+ * }
+ * void loop()
+ * {
+ *     digitalWrite(led,HIGH);
+ *     delayMicroseconds(1000);
+ *     digitalWrite(led,LOW);
+ *     delayMicroseconds(1000);
+ * }
+ * </code> 
 *****************************************************************************/
 void delayMicroseconds(uint32_t usec);
 

@@ -1,3 +1,16 @@
+/*
+  Copyright (c) 2014 MediaTek Inc.  All right reserved.
+
+  This library is free software; you can redistribute it and/or
+  modify it under the terms of the GNU Lesser General Public
+  License as published by the Free Software Foundation; either
+  version 2.1 of the License..
+
+  This library is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. 
+   See the GNU Lesser General Public License for more details.
+*/
 #include <LBT.h>
 #include <LBTClient.h>
 
@@ -10,17 +23,17 @@ int read_size = 0;
 void setup()  
 {
   Serial.begin(9600);
-  ard_log("LBT start");
+  ard_log("LBT start\n");
   // begin BT
   bool success = LBTClient.begin();
   if( !success )
   {
-      ard_log("Cannot begin Bluetooth Client successfully");
+      ard_log("Cannot begin Bluetooth Client successfully\n");
       delay(0xffffffff);
   }
   else
   {
-      ard_log("Bluetooth Client begin successfully");
+      ard_log("Bluetooth Client begin successfully\n");
       // scan the devices around
       int num = LBTClient.scan(30);
       ard_log("scanned device number [%d]", num);
@@ -38,7 +51,7 @@ void setup()
         if (0 == strcmp(info.name, SPP_SVR))
         {
             find = 1;
-            ard_log("found");
+            ard_log("found\n");
             break;
         }
       }
@@ -52,19 +65,19 @@ void loop()
     // to check if the connection is ready
     if(find && !LBTClient.connected())
     {
-        ard_log("Diconnected, try to connect");
+        ard_log("Diconnected, try to connect\n");
         // do connect
         bool conn_result = LBTClient.connect(info.address);
         ard_log("connect result [%d]", conn_result);
  
         if( !conn_result )
         {
-            ard_log("Cannot connect to SPP Server successfully");
+            ard_log("Cannot connect to SPP Server successfully\n");
             delay(0xffffffff);
         }
         else
         {
-            ard_log("Connect to SPP Server successfully");
+            ard_log("Connect to SPP Server successfully\n");
         }
 
         char buffer[32] = {0};
@@ -90,7 +103,7 @@ void loop()
         
         find = 0;
     }
-    ard_log("loop client");
+    ard_log("loop client\n");
     delay(2000);
 
 }

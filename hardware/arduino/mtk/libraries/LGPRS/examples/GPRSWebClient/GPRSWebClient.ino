@@ -1,3 +1,19 @@
+/*
+  Web client
+
+ This sketch connects to a website through GPRS on LinkIt platform. 
+ Specifically,
+ this example downloads the URL "http://arduino.cc/asciilogo.txt" and
+ prints it to the Serial monitor.
+
+ created 8 Mar 2012
+ by Tom Igoe
+ Modified 20 Aug 2014
+ by MediaTek Inc.
+
+ */
+
+
 #include <LGPRS.h>
 #include <LGPRSClient.h>
 #include <LGPRSServer.h>

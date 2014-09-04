@@ -1,3 +1,17 @@
+/*
+  WiFi Web Server
+
+ A simple web server that a repeated counter
+
+ Change the macro WIFI_AP, WIFI_PASSWORD and WIFI_AUTH accordingly.
+
+ created 13 July 2010
+ by dlf (Metodo2 srl)
+ modified 31 May 2012
+ by Tom Igoe
+ modified 20 Aug 2014
+ by MediaTek Inc.
+ */
 #include <LTask.h>
 #include <LWiFi.h>
 #include <LWiFiServer.h>

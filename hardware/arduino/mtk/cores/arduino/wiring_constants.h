@@ -14,6 +14,8 @@
   You should have received a copy of the GNU Lesser General Public
   License along with this library; if not, write to the Free Software
   Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+
+  Modified 20 Aug 2014 by MediaTek Inc.
 */
 
 #ifndef _WIRING_CONSTANTS_
@@ -245,20 +247,6 @@ typedef unsigned int word;
  *****************************************************************************/
 #define bit(b) (1UL << (b))
 
-/*****************************************************************************
- * FUNCTION
- *  _BV
- * DESCRIPTION
- *  Converts a bit number into a byte value, same with bit.
- *   he bit shift is performed by the compiler which then inserts the
- *   result into the code. Thus, there is no run-time overhead when using
- * PARAMETERS
- *  bit: the bit whose value to compute 
- * RETURNS
- *  the value of the bit 
- * RETURN VALUES  
- *  depend on input value
- *****************************************************************************/
 #define _BV(bit) (1 << (bit))
 
 /* DOM-NOT_FOR_SDK-BEGIN */

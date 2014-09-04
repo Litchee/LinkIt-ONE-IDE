@@ -1,19 +1,15 @@
 /*
-  Copyright (c) 2011 Arduino.  All right reserved.
+  Copyright (c) 2014 MediaTek Inc.  All right reserved.
 
   This library is free software; you can redistribute it and/or
   modify it under the terms of the GNU Lesser General Public
   License as published by the Free Software Foundation; either
-  version 2.1 of the License, or (at your option) any later version.
+  version 2.1 of the License..
 
   This library is distributed in the hope that it will be useful,
   but WITHOUT ANY WARRANTY; without even the implied warranty of
   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. 
-  See the GNU Lesser General Public License for more details.
-
-  You should have received a copy of the GNU Lesser General Public
-  License along with this library; if not, write to the Free Software
-  Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+   See the GNU Lesser General Public License for more details.
 */
 
 #ifndef LBTCLIENT_H
@@ -26,7 +22,6 @@ struct LBTClientBeginContext : BTBase
 {
     void* name;
     boolean result;
-    boolean is_set_pin;
     LBTClientBeginContext():
         name(NULL),
         result(false)
@@ -39,7 +34,7 @@ struct LBTClientConnectContext : BTBase
 {
     LBTAddress* address;
     boolean result;
-
+    boolean is_set_pin;
     LBTClientConnectContext():
         address(NULL),
         result(false)
@@ -111,7 +106,7 @@ public:
     //    true: success
     //    false: fail
 	// EXAMPLE
-	//	<code>
+	// <code>
     // #include <LBTClient.h>
     //   
     // void setup()
@@ -134,15 +129,15 @@ public:
     // {
     //   
     // }
-	//	</code> 
-    boolean begin(const uint8_t* pinCode = NULL);
+	// </code> 
+    boolean begin(void);
 
     // DESCRIPTION
     //    close corresponding SPP client instance and end BT module
     // RETURNS
     //    None
 	// EXAMPLE
-	//	<code>
+	// <code>
     // #include <LBTClient.h>
     //       
     // void setup()
@@ -167,16 +162,19 @@ public:
     // {
     //   
     // }
-	//	</code> 
+	// </code> 
     void end(void);
 
     // DESCRIPTION
     //    connect SPP server with BT address
+    // PARAMETERS
+    //    address: refer to LBTAddress type
+    //    pinCode: BT2.0 pincode, if you set it as const string, LinkOne can communicate BT2.0 device.
     // RETURNS
     //    true: success
     //    false: fail
 	// EXAMPLE
-	//	<code>
+	// <code>
     // #include <LBT.h>
     // #include <LBTClient.h>
     //   
@@ -201,7 +199,7 @@ public:
     //           LBTDeviceInfo info = {0};
     //           if( LBTClient.getDeviceInfo(0, &info) )
     //           {
-    //               bool conn_result = LBTClient.connect(info.address);
+    //               bool conn_result = LBTClient.connect(info.address);//bool conn_result = LBTClient.connect(info.address, "1234");
     //               if( !conn_result )
     //               {
     //                   Serial.println("Cannot connect to Spp Server successfully");
@@ -222,18 +220,22 @@ public:
     //       } 
     //   }
     // }
-	//	</code> 
+	// </code> 
     boolean connect(
-            LBTAddress &address  //[IN] BT address to connect
+            LBTAddress &address,  //[IN] BT address to connect
+            const char* pinCode = NULL //[IN] BT2.0 set pincode
         );
 
     // DESCRIPTION
-    //    connect SPP server with BT address
+    //    connect SPP server with BT address on spencified BT address
+    // PARAMETERS
+    //    MACAddr: string format (const char *), the format is like "12:34:56:ab:cd:ef".
+    //    pinCode: BT2.0 pincode, if you set it as const string, LinkOne can communicate BT2.0 device.
     // RETURNS
     //    true: success
     //    false: fail
 	// EXAMPLE
-	//	<code>
+	// <code>
     // #include <LBT.h>
     // #include <LBTClient.h>
     //   
@@ -256,7 +258,7 @@ public:
     //       if(num > 0)
     //       {
     //           LBTDeviceInfo info = {0};
-    //           bool conn_result = LBTClient.connect("1234:56:abcdef");
+    //           bool conn_result = LBTClient.connect("12:34:56:ab:cd:ef");//bool conn_result = LBTClient.connect("12:34:56:ab:cd:ef", "1234");
     //           if( !conn_result )
     //           {
     //               Serial.println("Cannot connect to Spp Server successfully");
@@ -270,9 +272,10 @@ public:
     //       } 
     //   }
     // }
-	//	</code> 
+	// </code> 
     boolean connect(
-            const char *MACAddr  //[IN] BT address to connect
+            const char *MACAddr,  //[IN] BT address to connect
+            const char* pinCode = NULL //[IN] BT2.0 set pincode
         );
     // DESCRIPTION
     //    check if any SPP server is conneccted
@@ -280,7 +283,7 @@ public:
     //    true: yes
     //    false: no
 	// EXAMPLE
-	//	<code>
+	// <code>
     // #include <LBT.h>
     // #include <LBTClient.h>
     //      
@@ -317,7 +320,7 @@ public:
     //       }
     //   }
     // }
-	//	</code> 
+	// </code> 
     boolean connected(void);
 
     // DESCRIPTION
@@ -325,7 +328,7 @@ public:
     // RETURNS
     //    number of devices scanned
 	// EXAMPLE
-	//	<code>
+	// <code>
     // #include <LBTClient.h>
     //   
     // void setup()
@@ -352,7 +355,7 @@ public:
     // {
     //   
     // }
-	//	</code> 
+	// </code> 
     int scan(
             size_t time_out = 20   // [IN] time out duration in seconds of the scan process
         );
@@ -363,7 +366,7 @@ public:
     //    true: success
     //    false : fail. Possible reasons are index not reasonable or never scanned before
 	// EXAMPLE
-	//	<code>
+	// <code>
     // #include <LBT.h>
     // #include <LBTClient.h>
     //   
@@ -404,7 +407,7 @@ public:
     // {
     //   
     // }
-	//	</code> 
+	// </code> 
 	boolean getDeviceInfo(
             size_t index,    // [IN] device index of the scanned result
             LBTDeviceInfo* dev_info    // [OUT] device info acquired
@@ -416,7 +419,7 @@ public:
     //    number of bytes read
     //    0 for no data to read
 	// EXAMPLE
-	//	<code>
+	// <code>
     // #include <LBT.h>
     // #include <LBTClient.h>
     //   
@@ -474,7 +477,7 @@ public:
     //         Serial.println(buffer);
     //     }
     // }
-	//	</code> 
+	// </code> 
 
         int read(void);
 
@@ -484,7 +487,7 @@ public:
     //    number of bytes written
     //    0 for no buffer to write
 	// EXAMPLE
-	//	<code>
+	// <code>
     // #include <LBT.h>
     // #include <LBTClient.h>
     //   
@@ -541,7 +544,7 @@ public:
     //         Serial.println(write_size);
     //     }
     //}
-	//	</code> 
+	// </code> 
 
     size_t write(
             const uint8_t* buf,    // [IN] daat to write
@@ -562,14 +565,12 @@ public:
     int peek(void);
     
  //  waits for the transmission of outgoing serial data to complete
- //
- // RETURNS none    
     void flush(void);
     
 // write a char 
 //
 // RETURNS
-// the number of write    
+// 1 for write success, 0 for write fail   
     size_t write(const uint8_t data  //[IN] input char
                 );
                 
@@ -586,6 +587,7 @@ private:
 
 };
 
+// the LBTClientClass object
 extern LBTClientClass LBTClient;
 
 #endif //#ifndef LBTCLIENT_H

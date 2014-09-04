@@ -1,38 +1,17 @@
-/*****************************************************************************
-*  Copyright Statement:
-*  --------------------
-*  This software is protected by Copyright and the information contained
-*  herein is confidential. The software may not be copied and the information
-*  contained herein may not be used or disclosed except with the written
-*  permission of MediaTek Inc. (C) 2005
-*
-*  BY OPENING THIS FILE, BUYER HEREBY UNEQUIVOCALLY ACKNOWLEDGES AND AGREES
-*  THAT THE SOFTWARE/FIRMWARE AND ITS DOCUMENTATIONS ("MEDIATEK SOFTWARE")
-*  RECEIVED FROM MEDIATEK AND/OR ITS REPRESENTATIVES ARE PROVIDED TO BUYER ON
-*  AN "AS-IS" BASIS ONLY. MEDIATEK EXPRESSLY DISCLAIMS ANY AND ALL WARRANTIES,
-*  EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE IMPLIED WARRANTIES OF
-*  MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE OR NONINFRINGEMENT.
-*  NEITHER DOES MEDIATEK PROVIDE ANY WARRANTY WHATSOEVER WITH RESPECT TO THE
-*  SOFTWARE OF ANY THIRD PARTY WHICH MAY BE USED BY, INCORPORATED IN, OR
-*  SUPPLIED WITH THE MEDIATEK SOFTWARE, AND BUYER AGREES TO LOOK ONLY TO SUCH
-*  THIRD PARTY FOR ANY WARRANTY CLAIM RELATING THERETO. MEDIATEK SHALL ALSO
-*  NOT BE RESPONSIBLE FOR ANY MEDIATEK SOFTWARE RELEASES MADE TO BUYER'S
-*  SPECIFICATION OR TO CONFORM TO A PARTICULAR STANDARD OR OPEN FORUM.
-*
-*  BUYER'S SOLE AND EXCLUSIVE REMEDY AND MEDIATEK'S ENTIRE AND CUMULATIVE
-*  LIABILITY WITH RESPECT TO THE MEDIATEK SOFTWARE RELEASED HEREUNDER WILL BE,
-*  AT MEDIATEK'S OPTION, TO REVISE OR REPLACE THE MEDIATEK SOFTWARE AT ISSUE,
-*  OR REFUND ANY SOFTWARE LICENSE FEES OR SERVICE CHARGE PAID BY BUYER TO
-*  MEDIATEK FOR SUCH MEDIATEK SOFTWARE AT ISSUE.
-*
-*  THE TRANSACTION CONTEMPLATED HEREUNDER SHALL BE CONSTRUED IN ACCORDANCE
-*  WITH THE LAWS OF THE STATE OF CALIFORNIA, USA, EXCLUDING ITS CONFLICT OF
-*  LAWS PRINCIPLES.  ANY DISPUTES, CONTROVERSIES OR CLAIMS ARISING THEREOF AND
-*  RELATED THERETO SHALL BE SETTLED BY ARBITRATION IN SAN FRANCISCO, CA, UNDER
-*  THE RULES OF THE INTERNATIONAL CHAMBER OF COMMERCE (ICC).
-*
-*****************************************************************************/
-#include "arduino.h"
+/*
+  Copyright (c) 2014 MediaTek Inc.  All right reserved.
+
+  This library is free software; you can redistribute it and/or
+  modify it under the terms of the GNU Lesser General Public
+  License as published by the Free Software Foundation; either
+  version 2.1 of the License..
+
+  This library is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. 
+   See the GNU Lesser General Public License for more details.
+*/
+
 #include "LBT.h"
 #include "Vmbtcm.h"
 #include "Vmtimer.h"
@@ -50,7 +29,7 @@
 #define FILE_PATH_SIZE 16
 #define SPP_DATA "Hello SPP!"
 #ifdef LBT_DEBUG
-#define APP_LOG(...) app_log_file(__VA_ARGS__); \ 
+#define APP_LOG(...) app_log_file(__VA_ARGS__); \
     vm_log_info(__VA_ARGS__)
 #else
 #define APP_LOG(...)
@@ -61,9 +40,6 @@ extern vm_thread_mutex_struct server_mutex;
 extern void app_log_file(char *fmt, ...);
 
 
-
-//vm_log_info("receive msg = %d", message);
-//vm_log_warn((char*)"open failed");
 
 #define SPP_UUID 0x1101
 
@@ -138,7 +114,6 @@ static void bt_server_btcm_cb(VMUINT evt, void * param, void * user_data)
 
                     if(bt_server_end_spp())
                     {
-                        //LTask.post_signal();
                         g_serverContext.ptr->post_signal();
                     }
                 }
@@ -146,7 +121,6 @@ static void bt_server_btcm_cb(VMUINT evt, void * param, void * user_data)
                 {
                     *(g_serverContext.waiting_result_p) = true;
                     g_serverContext.waiting_result_p = NULL;
-                    //LTask.post_signal();
                     g_serverContext.ptr->post_signal();
                 }
 
@@ -169,7 +143,6 @@ static void bt_server_btcm_cb(VMUINT evt, void * param, void * user_data)
                     }
                     
                     g_serverContext.server_status = BT_SERVER_IDLE;
-                    //LTask.post_signal();
                     g_serverContext.ptr->post_signal();
                 }
             }
@@ -195,7 +168,6 @@ static void bt_server_btcm_cb(VMUINT evt, void * param, void * user_data)
 
                     if(bt_server_end_spp())
                     {
-                        //LTask.post_signal();
                         g_serverContext.ptr->post_signal();
                     }
                 }
@@ -209,7 +181,6 @@ static void bt_server_btcm_cb(VMUINT evt, void * param, void * user_data)
                 }
                 
                 g_serverContext.server_status = BT_SERVER_IDLE;
-                //LTask.post_signal();
                 g_serverContext.ptr->post_signal();
             }
                 
@@ -219,7 +190,6 @@ static void bt_server_btcm_cb(VMUINT evt, void * param, void * user_data)
         case VM_SRV_BT_CM_EVENT_SET_VISIBILITY:
         {
             APP_LOG("[BTC] VM_SRV_BT_CM_EVENT_SET_VISIBILITY");
-            //LTask.post_signal();
             g_serverContext.ptr->post_signal();
             break;
         }
@@ -256,7 +226,6 @@ static void bt_server_accept_timeout_cb(VMINT tid)
         *(g_serverContext.waiting_result_p) = false;
         g_serverContext.waiting_result_p = NULL;
 
-        //LTask.post_signal();
         g_serverContext.ptr->post_signal();
     }
 }
@@ -338,7 +307,6 @@ static void bt_server_spp_cb(VMUINT evt, void * param, void * user_data)
             if(g_serverContext.waiting_result_p != NULL)
             {
                 g_serverContext.waiting_result_p = NULL;
-                //LTask.post_signal();
                 g_serverContext.ptr->post_signal();
                 bt_server_accept_timeout_cb(g_serverContext.accept_tid);
             }
@@ -375,7 +343,6 @@ static void bt_server_spp_cb(VMUINT evt, void * param, void * user_data)
                             curr_addr.nap,
                             curr_addr.uap,
                             curr_addr.lap);
-                //if (0 != memcmp(&tmp, &curr_addr, sizeof(vm_srv_bt_cm_bt_addr)))
                 if ((tmp.nap != curr_addr.nap) || 
                     (tmp.uap != curr_addr.uap) || 
                     (tmp.lap != curr_addr.lap))
@@ -409,7 +376,6 @@ static void bt_server_spp_cb(VMUINT evt, void * param, void * user_data)
 
         case VM_SRV_SPP_EVENT_READY_TO_WRITE:
         {
-            //g_serverContext.ptr->post_signal();
             g_serverContext.ptr->post_signal_write();
             break;
         }

@@ -14,6 +14,9 @@
   You should have received a copy of the GNU Lesser General Public
   License along with this library; if not, write to the Free Software
   Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+  
+  
+  Modified 20 Aug 2014 by MediaTek Inc.
 */
 
 #ifndef _WIRING_PULSE_
@@ -25,23 +28,21 @@
 
 #include <avr/pgmspace.h>
  
-// DESCRIPTION
-//  Duration of acquiring voltage (HIGH or LOW) of a pin. The accuracy is us; range is approx. 10us to 3 mins.
-// RETURNS
-//  N/A
-// EXAMPLE
-//	<code>
-//  #define BUTTON   13
-//  unsigned long duration;
-//	void setup()
-//  {
-//    pinMode(BUTTON, INPUT);
-//  }
-//	void loop()
-//  {
+//DESCRIPTION
+// Duration of acquiring voltage (HIGH or LOW) of a pin. The accuracy is us; range is approx. 10us to 3 mins.
+//EXAMPLE
+// <code>
+// #define BUTTON   13
+// unsigned long duration;
+// void setup()
+// {
+//     pinMode(BUTTON, INPUT);
+// }
+// void loop()
+// {
 //     duration = pulseIn(BUTTON, HIGH);
-//  }
-//	</code> 
+// }
+// </code> 
 uint32_t pulseIn(
   uint32_t ulPin,     // [IN] Pin number measured
   uint32_t ulState,   // [IN] Voltage type measured (HIGH or LOW)

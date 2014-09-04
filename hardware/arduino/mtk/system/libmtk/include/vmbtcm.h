@@ -94,6 +94,7 @@ typedef enum
     VM_SRV_BT_CM_EVENT_SET_AUTHORIZE               = 0x00010000, /* set authorize */
     VM_SRV_BT_CM_EVENT_UNBLOCK                     = 0x00020000, /* unblock device */
     VM_SRV_BT_CM_EVENT_MYDEV_DEL                   = 0x00040000, /* mydevice delete */
+    VM_SRV_BT_CM_EVENT_BLE_ACTIVATE                = 0x00080000, /*BLE active notify*/
     VM_SRV_BT_CM_EVENT_SET_VISIBILITY              = 0x00100000, /* set visibility */
     VM_SRV_BT_CM_EVENT_SET_NAME                    = 0x00200000, /* set name */
     VM_SRV_BT_CM_EVENT_SET_AUTHENTICATION          = 0x00400000, /* set authentication */
@@ -173,7 +174,7 @@ typedef struct
 
 
 
-/* event struct for VM_SRV_BT_CM_EVENT_ACTIVATE */
+/* event struct for VM_SRV_BT_CM_EVENT_ACTIVATE & VM_SRV_BT_CM_EVENT_BLE_ACTIVATE */
 typedef struct
 {
     VMINT res_hd;                 /* res handle*/ 

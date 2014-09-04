@@ -14,6 +14,7 @@
   You should have received a copy of the GNU Lesser General Public
   License along with this library; if not, write to the Free Software
   Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+  Modified 20 Aug 2014 by MediaTek Inc.
 */
 
 #ifndef _UART_CLASS_
@@ -24,26 +25,11 @@
 #include "vmdcl.h"
 #include "vmdcl_gpio.h"
 #include "vmdcl_sio.h"
-// Includes Atmel CMSIS
 #include <chip.h>
 
-/*****************************************************************************
- * Class UARTClass
- ****************************************************************************/
 // UARTClass is designed for LinkIt One board connecte with other hardware device through UART
-// EXAMPLE:
-// <code>
-// #define SENSOR 0
-// int val = 0;
-// void setup(){
-// Serial.begin(9600);
-// }
-// void loop(){
-// val = analogRead(SENSOR);
-// Serial.println(val);
-// delay(100);
-// }
-// </code>
+// LinkIt One has 2 serial ports: Serial and Serial1. Serial communicates on USB port, Serial1
+// on pins0(RX) and pins1(TX).
 class UARTClass : public HardwareSerial
 {
   protected:
@@ -53,7 +39,6 @@ class UARTClass : public HardwareSerial
     VM_DCL_HANDLE uart_handle;
 
   public:
-// Constructor / Destructor
     UARTClass( int usbNum, RingBuffer* pRx_buffer ) ;
     
 // Method
@@ -61,24 +46,22 @@ class UARTClass : public HardwareSerial
   	
  //  sets the data rate in bits per sencond for serial data transmission
  //
- // RETURNS
- // none
- //
  // EXAMPLE
- // <code>
- //  void setup(){
+ //<code>
+ //void setup()
+ //{
  //    Serial.begin(115200);
- //  }
- //  void loop(){}
- // </code> 
+ //}
+ //void loop()
+ //{
+ //    //handle code
+ //}
+ //</code> 
 void begin( const uint32_t dwBaudRate //[IN] in bits per sencond(baud rate)
           ) ;
 
  //  disables serial communication, allowing the RX and TX pins to be used for 
  //  general input and output
- //
- // RETURNS
- // none  
 void end( void ) ;
 
  //  get the number of bytes(characters)avaiable for reading from the serial port.
@@ -87,18 +70,21 @@ void end( void ) ;
  // the bumbers of bytes available to read
  //
  // EXAMPLE
- // <code>
- //  int numberscomingBytes = 0;
- //  void setup(){
+ //<code>
+ //int numberscomingBytes = 0;
+ //void setup()
+ //{
  //    Serial.begin(115200);
- //  }
- //  void loop(){
- //   if(Serial.available()>0){
- //   numberscomingBytes = Serial.read();
- //   Serial.print(numberscomingBytes);
- //   }
- //  }
- // </code> 
+ //}
+ //void loop()
+ //{
+ //    if(Serial.available()>0)
+ //    {
+ //        numberscomingBytes = Serial.read();
+ //        Serial.print(numberscomingBytes);
+ //    }
+ //}
+ //</code> 
 int available( void ) ;
 
  //  returns the next byte of incoming serial data without removing it from the 
@@ -114,24 +100,25 @@ int peek( void ) ;
  // the first byte of incoimng serial data avaiable, -a if no data is available
  //
  // EXAMPLE
- //	<code>
- //  int incomingdata = 0;
- //  void setup() {
+ //<code>
+ //int incomingdata = 0;
+ //void setup()
+ //{
  //    Serial.begin(9600);  
- //  }
- //  void loop() {
- //    if (Serial.available() > 0) {
- //      incomingdata = Serial.read();
- //      Serial.print("received data: ");
- //      Serial.println(incomingdata, DEC);
+ //}
+ //void loop()
+ //{
+ //    if (Serial.available() > 0)
+ //    {
+ //        incomingdata = Serial.read();
+ //        Serial.print("received data: ");
+ //        Serial.println(incomingdata, DEC);
  //    }
- //  }
- //	</code> 
+ //}
+ //</code> 
 int read( void ) ;
 
  //  waits for the transmission of outgoing serial data to complete
- //
- // RETURNS none
 void flush( void ) ;
 
 // write a char 
@@ -146,8 +133,37 @@ size_t write( const uint8_t c //[IN] input char
     // pull in write(str) and write(buf, size) from Print
     using Print::write ; 
     	
-    // UART always active
+// Check if the serail port is ready. 
+//
+// For Serial (USB port), it will check DTR signal to know that if the USB CDC 
+// serial connection is established or not (i.e. return true if PC side application
+// opens the corresponding COM port, and return false if the application closes the port).
+//
+// For Serial1, it will always return true.
+// RETURNS
+// For Serial:
+// * true: DTR is 1, PC application has opened the COM port.
+// * false: DTR is 0, no application open the COM port.
+// For Serial1:
+// * always return true
+// EXAMPLE
+//<code>
+//void setup() 
+//{
+//    Serial.begin(9600);
+//    while (!Serial)
+//    {
+//        ; // wait for serial port to connect. 
+//    }
+//}
+//</code> 
     operator bool(); 
 };
+
+// the UARTClass object, Serial on USB port
+extern UARTClass Serial;
+
+// the UARTClass object, Serial1 on pins0(RX) and pins1(TX)
+extern UARTClass Serial1;
 
 #endif // _UART_CLASS_

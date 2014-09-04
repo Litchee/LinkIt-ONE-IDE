@@ -1,37 +1,16 @@
-/*****************************************************************************
-*  Copyright Statement:
-*  --------------------
-*  This software is protected by Copyright and the information contained
-*  herein is confidential. The software may not be copied and the information
-*  contained herein may not be used or disclosed except with the written
-*  permission of MediaTek Inc. (C) 2005
-*
-*  BY OPENING THIS FILE, BUYER HEREBY UNEQUIVOCALLY ACKNOWLEDGES AND AGREES
-*  THAT THE SOFTWARE/FIRMWARE AND ITS DOCUMENTATIONS ("MEDIATEK SOFTWARE")
-*  RECEIVED FROM MEDIATEK AND/OR ITS REPRESENTATIVES ARE PROVIDED TO BUYER ON
-*  AN "AS-IS" BASIS ONLY. MEDIATEK EXPRESSLY DISCLAIMS ANY AND ALL WARRANTIES,
-*  EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE IMPLIED WARRANTIES OF
-*  MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE OR NONINFRINGEMENT.
-*  NEITHER DOES MEDIATEK PROVIDE ANY WARRANTY WHATSOEVER WITH RESPECT TO THE
-*  SOFTWARE OF ANY THIRD PARTY WHICH MAY BE USED BY, INCORPORATED IN, OR
-*  SUPPLIED WITH THE MEDIATEK SOFTWARE, AND BUYER AGREES TO LOOK ONLY TO SUCH
-*  THIRD PARTY FOR ANY WARRANTY CLAIM RELATING THERETO. MEDIATEK SHALL ALSO
-*  NOT BE RESPONSIBLE FOR ANY MEDIATEK SOFTWARE RELEASES MADE TO BUYER'S
-*  SPECIFICATION OR TO CONFORM TO A PARTICULAR STANDARD OR OPEN FORUM.
-*
-*  BUYER'S SOLE AND EXCLUSIVE REMEDY AND MEDIATEK'S ENTIRE AND CUMULATIVE
-*  LIABILITY WITH RESPECT TO THE MEDIATEK SOFTWARE RELEASED HEREUNDER WILL BE,
-*  AT MEDIATEK'S OPTION, TO REVISE OR REPLACE THE MEDIATEK SOFTWARE AT ISSUE,
-*  OR REFUND ANY SOFTWARE LICENSE FEES OR SERVICE CHARGE PAID BY BUYER TO
-*  MEDIATEK FOR SUCH MEDIATEK SOFTWARE AT ISSUE.
-*
-*  THE TRANSACTION CONTEMPLATED HEREUNDER SHALL BE CONSTRUED IN ACCORDANCE
-*  WITH THE LAWS OF THE STATE OF CALIFORNIA, USA, EXCLUDING ITS CONFLICT OF
-*  LAWS PRINCIPLES.  ANY DISPUTES, CONTROVERSIES OR CLAIMS ARISING THEREOF AND
-*  RELATED THERETO SHALL BE SETTLED BY ARBITRATION IN SAN FRANCISCO, CA, UNDER
-*  THE RULES OF THE INTERNATIONAL CHAMBER OF COMMERCE (ICC).
-*
-*****************************************************************************/
+/*
+  Copyright (c) 2014 MediaTek Inc.  All right reserved.
+
+  This library is free software; you can redistribute it and/or
+  modify it under the terms of the GNU Lesser General Public
+  License as published by the Free Software Foundation; either
+  version 2.1 of the License..
+
+  This library is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. 
+   See the GNU Lesser General Public License for more details.
+*/
 #include "arduino.h"
 #include "BTServer.h"
 #include "LBTServer.h"
@@ -41,7 +20,7 @@
 extern int addrStr2Mac(const char *MACAddr, LBTAddress &address);
 extern void app_log_file(char *fmt, ...);
 #ifdef LBT_DEBUG
-#define APP_LOG(...) app_log_file(__VA_ARGS__); \ 
+#define APP_LOG(...) app_log_file(__VA_ARGS__); \
     vm_log_info(__VA_ARGS__)
 #else
 #define APP_LOG(...)
@@ -223,20 +202,24 @@ uint8_t a2x(char ch)
 
 int addrStr2Mac(const char *MACAddr, LBTAddress &address)
 {
-    if (14 != strlen(MACAddr))
+    if (17 != strlen(MACAddr))
     {
         return -1;
     }
 
-    if (MACAddr[4] != ':' || MACAddr[7] != ':')
+    if (MACAddr[2] != ':' || MACAddr[5] != ':' ||
+        MACAddr[8] != ':' || MACAddr[11] != ':' || MACAddr[14] != ':')
     {
         return -2;
     }
 
     char tmp[13] = {0};
-    strncpy(tmp, MACAddr, 4);
-    strncpy(tmp + 4, MACAddr + 5, 2);
-    strncpy(tmp + 6, MACAddr + 8, 6);
+    strncpy(tmp, MACAddr, 2);
+    strncpy(tmp + 2, MACAddr + 3, 2);
+    strncpy(tmp + 4, MACAddr + 6, 2);
+    strncpy(tmp + 6, MACAddr + 9, 2);
+    strncpy(tmp + 8, MACAddr + 12, 2);
+    strncpy(tmp + 10, MACAddr + 15, 2);
 
     for (int i = 0; i < 12; ++i)
     {

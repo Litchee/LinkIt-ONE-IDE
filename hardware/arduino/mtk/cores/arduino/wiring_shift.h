@@ -14,6 +14,8 @@
   You should have received a copy of the GNU Lesser General Public
   License along with this library; if not, write to the Free Software
   Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+
+  Modified 20 Aug 2014 by MediaTek Inc.
 */
 
 #ifndef _WIRING_SHIFT_
@@ -23,29 +25,29 @@
  extern "C" {
 #endif
 
-// DESCRIPTION
-//  Reads data of a byte by bits on the assigned pin. 
-//  Every bit of data is read from the data pin. 
-//  You can select to combine the read 8-bit data into a byte from MSB or LSB. 
-//  Every clock cycle (meaning the clock goes through a complete high voltage and low voltage) reads a bit of data; every bit of data is read when the clock signal is at high voltage.
-// RETURNS
-//  Data read (one byte)
-// EXAMPLE
-//	<code>
-//	#define DATA  13
-//  #define CLOCK 15
-//	void setup()
-//  {
-//    pinMode(DATA, INPUT);
-//    pinMode(CLOCK, OUTPUT);
-//  }
-//	void loop()
-//  {
+//DESCRIPTION
+// Reads data of a byte by bits on the assigned pin. 
+// Every bit of data is read from the data pin. 
+// You can select to combine the read 8-bit data into a byte from MSB or LSB. 
+// Every clock cycle (meaning the clock goes through a complete high voltage and low voltage) reads a bit of data; every bit of data is read when the clock signal is at high voltage.
+//RETURNS
+// Data read (one byte)
+//EXAMPLE
+// <code>
+// #define DATA  13
+// #define CLOCK 15
+// void setup()
+// {
+//     pinMode(DATA, INPUT);
+//     pinMode(CLOCK, OUTPUT);
+// }
+// void loop()
+// {
 //     byte data;
 //     data = shiftIn(DATA, CLOCK, LSBFIRST);
 //     delay(1000);
-//  }
-//	</code> 
+// }
+// </code> 
 extern uint32_t shiftIn(
   uint32_t ulDataPin,  // [IN] Data input pin, for reading every bit of data
   uint32_t ulClockPin, // [IN] Clock pin. Periodically switches between high voltage and low voltage when dataPin outputs data
@@ -53,28 +55,26 @@ extern uint32_t shiftIn(
    ) ;
 
 
-// DESCRIPTION
-//  Outputs a byte of data by bits on the assigned pin. 
-//  Every bit of data is outputted from the data pin. 
-//  You can select to start output from MSB or LSB of the data. 
-//  Every clock cycle (meaning the clock goes through a complete high voltage and low voltage) outputs a bit of data.
-// RETURNS
-//  N/A
-// EXAMPLE
-//	<code>
-//	#define DATA  13
-//  #define CLOCK 15
-//	void setup()
-//  {
-//    pinMode(DATA, INPUT);
-//    pinMode(CLOCK, OUTPUT);
-//  }
-//	void loop()
-//  {
+//DESCRIPTION
+// Outputs a byte of data by bits on the assigned pin. 
+// Every bit of data is outputted from the data pin. 
+// You can select to start output from MSB or LSB of the data. 
+// Every clock cycle (meaning the clock goes through a complete high voltage and low voltage) outputs a bit of data.
+//EXAMPLE
+// <code>
+// #define DATA  13
+// #define CLOCK 15
+// void setup()
+// {
+//     pinMode(DATA, INPUT);
+//     pinMode(CLOCK, OUTPUT);
+// }
+// void loop()
+// {
 //     shiftOut(DATA, CLOCK, LSBFIRST, 100);
 //     delay(1000);
-//  }
-//	</code> 
+// }
+// </code> 
 extern void shiftOut(
   uint32_t ulDataPin,   // [IN] Data output pin, for outputting every bit of data
   uint32_t ulClockPin,  // [IN] Clock pin. Periodically switches between high voltage and low voltage when dataPin outputs data

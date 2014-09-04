@@ -1,3 +1,19 @@
+/*
+  Web client
+
+ This sketch connects to a website 
+ using Wi-Fi functionality on MediaTek LinkIt platform.
+
+ Change the macro WIFI_AP, WIFI_PASSWORD, WIFI_AUTH and SITE_URL accordingly.
+
+ created 13 July 2010
+ by dlf (Metodo2 srl)
+ modified 31 May 2012
+ by Tom Igoe
+ modified 20 Aug 2014
+ by MediaTek Inc.
+ */
+
 #include <LTask.h>
 #include <LWiFi.h>
 #include <LWiFiClient.h>

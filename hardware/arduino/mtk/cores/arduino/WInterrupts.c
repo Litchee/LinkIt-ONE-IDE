@@ -1,20 +1,17 @@
 /*
-  Copyright (c) 2011-2012 Arduino.  All right reserved.
+  Copyright (c) 2014 MediaTek Inc.  All right reserved.
 
   This library is free software; you can redistribute it and/or
   modify it under the terms of the GNU Lesser General Public
   License as published by the Free Software Foundation; either
-  version 2.1 of the License, or (at your option) any later version.
+  version 2.1 of the License..
 
   This library is distributed in the hope that it will be useful,
   but WITHOUT ANY WARRANTY; without even the implied warranty of
   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. 
-  See the GNU Lesser General Public License for more details.
-
-  You should have received a copy of the GNU Lesser General Public
-  License along with this library; if not, write to the Free Software
-  Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+   See the GNU Lesser General Public License for more details.
 */
+
 
 #include "vmdcl.h"
 #include "vmdcl_gpio.h"
@@ -74,6 +71,8 @@ void attachInterrupt(uint32_t pin, void (*callback)(void), uint32_t mode)
     if(pin > EXTERNAL_NUM_INTERRUPTS)
 		return ;
 
+	detachInterrupt(pin);
+
 	if(!changePinType(gExinterruptsPio[pin].pin, PIO_EINT, &eint_handle))
 		return;
 	
@@ -100,7 +99,7 @@ void attachInterrupt(uint32_t pin, void (*callback)(void), uint32_t mode)
     	vm_log_info("VM_EINT_CMD_MASK  = %d", status);
     }
 	
-     status = vm_dcl_registercallback(eint_handle , VM_EVENT_EINT_TRIGGER,(VM_DCL_CALLBACK)eint_callback,(void*)NULL ); /* register callback function,Note: the last paramter fill NULL */
+     status = vm_dcl_registercallback(eint_handle , VM_EVENT_EINT_TRIGGER,(VM_DCL_CALLBACK)eint_callback,(void*)NULL );
      if(status != VM_DCL_STATUS_OK)
      {
          vm_log_info("VM_EVENT_EINT_TRIGGER = %d", status);
@@ -110,42 +109,29 @@ void attachInterrupt(uint32_t pin, void (*callback)(void), uint32_t mode)
 			
 	    if (mode == CHANGE)
 	    {
-	    		sens_data.sensitivity = 0;    /* 1 means level sensitiv, 0 means edge sensitive. */
-	              eint_config.act_polarity = 0;   /* 1 means positive active, 0 means negative active. */
-		       eint_config.auto_unmask = 1;    /* 1 means unmask after callback, 0 means not unmask. user unmask it themselves. */
+	    		sens_data.sensitivity = 0;
+	              eint_config.act_polarity = 0;
+		       eint_config.auto_unmask = 1;
 	    } 
 	    else 
-	    {
-		  // Select mode of operation
-		  if (mode == LOW) 
-		  {
-	    		sens_data.sensitivity = 1;    /* 1 means level sensitiv, 0 means edge sensitive. */
-	              eint_config.act_polarity = 0;   /* 1 means positive active, 0 means negative active. */
-		       eint_config.auto_unmask = 0;    /* 1 means unmask after callback, 0 means not unmask. user unmask it themselves. */
-
-		  }
-		  
-		  if (mode == HIGH)
-		  {
-	    		sens_data.sensitivity = 1;    /* Not support use low */
-	              eint_config.act_polarity = 1;   /* 1 means positive active, 0 means negative active. */
-		       eint_config.auto_unmask = 0;    /* 1 means unmask after callback, 0 means not unmask. user unmask it themselves. */
-		  }
-		  
+	    {		  
 		  if (mode == FALLING)
 		  {
-	    		sens_data.sensitivity = 0;    /* 1 means level sensitiv, 0 means edge sensitive. */
-	              eint_config.act_polarity = 0;   /* 1 means positive active, 0 means negative active. */
-		       eint_config.auto_unmask = 1;    /* 1 means unmask after callback, 0 means not unmask. user unmask it themselves. */
+	    		sens_data.sensitivity = 0;
+	              eint_config.act_polarity = 0;
+		       eint_config.auto_unmask = 1;
 		  }
-		  
-		  if (mode == RISING) 
+		  else if (mode == RISING) 
 		  {
-	    		sens_data.sensitivity = 0;    /* 1 means level sensitiv, 0 means edge sensitive. */
-	              eint_config.act_polarity = 1;   /* 1 means positive active, 0 means negative active. */
-		       eint_config.auto_unmask = 1;    /* 1 means unmask after callback, 0 means not unmask. user unmask it themselves. */
+	    		sens_data.sensitivity = 0;
+	              eint_config.act_polarity = 1;
+		       eint_config.auto_unmask = 1;
 		  }
-	     }
+		  else
+		  {
+		  		vm_log_info("mode not support = %d", mode);
+		  }
+	    }
 
 	    status = vm_dcl_control(eint_handle ,VM_EINT_CMD_SET_SENSITIVITY,(void *)&sens_data);  /* set eint sensitivity */
 	     if(status != VM_DCL_STATUS_OK)
@@ -166,7 +152,7 @@ void attachInterrupt(uint32_t pin, void (*callback)(void), uint32_t mode)
 	    	vm_log_info("VM_EINT_CMD_MASK  = %d", status);
 	    }
 
-	    eint_config.debounce_en = 1;    /* 1 means enable hw debounce, 0 means disable. */
+	    eint_config.debounce_en = 0;    /* 1 means enable hw debounce, 0 means disable. */
 
 	    status = vm_dcl_control(eint_handle ,VM_EINT_CMD_CONFIG,(void *)&eint_config);   /* Please call this api finally, because we will unmask eint in this command. */
 	    if(status != VM_DCL_STATUS_OK)
@@ -176,8 +162,9 @@ void attachInterrupt(uint32_t pin, void (*callback)(void), uint32_t mode)
 		
 	    if (mode == CHANGE)
 	    {
-	        eint_config.act_polarity = 1;   /* 1 means positive active, 0 means negative active. */
-	        status = vm_dcl_control(eint_handle ,VM_EINT_CMD_CONFIG,(void *)&eint_config);   /* Please call this api finally, because we will unmask eint in this command. */
+	    	 vm_eint_ctrl_set_auto_change_pol_t auto_change;
+		 auto_change.autoChangePol = 1;
+	        status = vm_dcl_control(eint_handle ,VM_EINT_CMD_SET_AUTO_CHANGE_POLARTIY,(void *)&auto_change);   /* Please call this api finally, because we will unmask eint in this command. */
 	        if(status != VM_DCL_STATUS_OK)
 	        {
 	            vm_log_info("VM_EINT_CMD_CONFIG chage= %d", status);
@@ -203,7 +190,6 @@ void detachInterrupt(uint32_t pin)
     }
 	gExinterruptsPio[pin].handle = VM_DCL_HANDLE_INVALID;
        gExinterruptsPio[pin].cb = NULL;
-	
 	g_APinDescription[gExinterruptsPio[pin].pin].ulHandle = VM_DCL_HANDLE_INVALID;
 	g_APinDescription[gExinterruptsPio[pin].pin].ulPinType= PIO_DIGITAL;
 }
