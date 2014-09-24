@@ -258,6 +258,9 @@ public:
 
     // read buffer length
     VMUINT32 read_len;
+
+    uint32_t write_2x(uint8_t* _data,uint32_t size);
+
 };
 
 //the SPI object
