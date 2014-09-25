@@ -1,2 +1,2 @@
 [autostart]
-App=C:\MRE\DHTtester.cpp.vxp
+App=C:\MRE\set_level.cpp.vxp
