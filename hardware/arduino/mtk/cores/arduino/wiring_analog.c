@@ -209,11 +209,11 @@ void analogWrite(uint32_t ulPin, uint32_t ulValue) {
 			vm_dcl_control(pwm_handle,VM_PWM_CMD_START,0);
 			setPinHandle(ulPin, pwm_handle);
 		}
-		
+
 		pwm_config_adv.counter = 1022;
 		pwm_config_adv.threshold = ulValue;
-		pwm_clock.source_clk = 1;
-		pwm_clock.source_clk_div =1;
+		pwm_clock.source_clk = 0;
+		pwm_clock.source_clk_div =3;
 		vm_dcl_control(pwm_handle,VM_PWM_CMD_SET_CLK,(void *)(&pwm_clock));
 		vm_dcl_control(pwm_handle,VM_PWM_CMD_SET_COUNTER_AND_THRESHOLD,(void *)(&pwm_config_adv));
 	}
@@ -234,8 +234,8 @@ void analogWrite(uint32_t ulPin, uint32_t ulValue) {
 		
 		pwm_config_adv.counter = 1022;
 		pwm_config_adv.threshold = ulValue;
-		pwm_clock.source_clk = 1;
-		pwm_clock.source_clk_div =1;
+		pwm_clock.source_clk = 0;
+		pwm_clock.source_clk_div =3;
 		vm_dcl_control(pwm_handle,VM_PWM_CMD_SET_CLK,(void *)(&pwm_clock));
 		vm_dcl_control(pwm_handle,VM_PWM_CMD_SET_COUNTER_AND_THRESHOLD,(void *)(&pwm_config_adv));
 	}
