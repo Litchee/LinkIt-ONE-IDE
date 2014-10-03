@@ -259,7 +259,7 @@ uint32_t SPIClass::write_2x(uint8_t* _data, uint32_t size)
     write_2x(_data, 2);
 
     transfer(_data[2])
-*/
+*//*
 uint32_t SPIClass::write(uint8_t* _data, uint32_t size)
 {
     int x = 1, y = 1, k;
@@ -280,6 +280,42 @@ uint32_t SPIClass::write(uint8_t* _data, uint32_t size)
     return write_2x(&_data[y/2], 2);
     else
     return transfer(_data[y/2]);
+}*/
+
+uint32_t SPIClass::write(uint8_t* _data, uint32_t size)
+{
+                int x = 1, y = 1, k;
+ 
+                while(y <= size)
+                {
+                  x++;
+                  y = (double)pow(2, (double)x);
+                }
+               
+                k = size-y/2;
+ 
+                write_2x(_data, y/2);
+               
+                if(k>2)
+                                return write(&_data[y/2], k);
+               
+                else if(k==2)
+                {
+                                if(conf_data.rx_endian == VM_SPI_ENDIAN_BIG)
+                                {
+                                                transfer(_data[y/2+1]);
+                                                return transfer(_data[y/2]);
+                                }
+                                else
+                                {
+                                                transfer(_data[y/2]);
+                                                return transfer(_data[y/2+1]);
+                                }
+                }
+                else
+                {
+                                return transfer(_data[y/2]);
+                }
 }
 
 SPIClass SPI;

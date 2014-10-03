@@ -1,2 +1,2 @@
 [autostart]
-App=C:\MRE\set_level.cpp.vxp
+App=C:\MRE\gsm_recv_call.cpp.vxp
